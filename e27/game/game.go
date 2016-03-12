@@ -48,6 +48,6 @@ func (*Game) Units() []awakengine.Unit {
 }
 
 // Viewport is the size of the window and the pixels in the window.
-func (*Game) Viewport() (camSize vec.I2, pixelSize int) {
-	return camSize, pixelSize
+func (*Game) Viewport() (camSize vec.I2, pixelSize int, title string) {
+	return camSize, pixelSize, windowTitle
 }

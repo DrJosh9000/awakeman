@@ -17,7 +17,7 @@ var (
 	// TODO: theW should be a Unit.
 	theW = &Doodad{
 		BaseDoodad: baseDoodads["W"],
-		pos:        vec.I2{860, 453},
+		P:          vec.I2{860, 453},
 	}
 )
 
@@ -28,63 +28,63 @@ type level struct{}
 func (level) Doodads() []*awakengine.Doodad {
 	return []*awakengine.Doodad{
 		// Above the north building.
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{122, 200}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{150, 80}},
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{220, 85}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{122, 200}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{150, 80}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{220, 85}},
 
 		// Next to the west lake.
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{76, 319}},
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{53, 357}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{76, 319}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{53, 357}},
 
 		// In the clearing
-		{BaseDoodad: baseDoodads["tree3"], pos: vec.I2{557, 498}},
-		{BaseDoodad: baseDoodads["puffyplant"], pos: vec.I2{437, 467}},
-		{BaseDoodad: baseDoodads["puffyplant"], pos: vec.I2{470, 561}},
-		{BaseDoodad: baseDoodads["puffyplant"], pos: vec.I2{432, 581}},
-		{BaseDoodad: baseDoodads["puffyplant"], pos: vec.I2{554, 591}},
-		{BaseDoodad: baseDoodads["puffyplant"], pos: vec.I2{653, 470}},
-		{BaseDoodad: baseDoodads["puffyplant"], pos: vec.I2{612, 436}},
+		{BaseDoodad: baseDoodads["tree3"], P: vec.I2{557, 498}},
+		{BaseDoodad: baseDoodads["puffyplant"], P: vec.I2{437, 467}},
+		{BaseDoodad: baseDoodads["puffyplant"], P: vec.I2{470, 561}},
+		{BaseDoodad: baseDoodads["puffyplant"], P: vec.I2{432, 581}},
+		{BaseDoodad: baseDoodads["puffyplant"], P: vec.I2{554, 591}},
+		{BaseDoodad: baseDoodads["puffyplant"], P: vec.I2{653, 470}},
+		{BaseDoodad: baseDoodads["puffyplant"], P: vec.I2{612, 436}},
 
 		// Between the buildings.
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{259, 654}},
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{319, 706}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{261, 740}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{259, 654}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{319, 706}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{261, 740}},
 
 		// Blockage from clearing.
-		{BaseDoodad: baseDoodads["tree9"], pos: vec.I2{627, 574}},
+		{BaseDoodad: baseDoodads["tree9"], P: vec.I2{627, 574}},
 
 		// Along the path along the north.
-		{BaseDoodad: baseDoodads["bench_h"], pos: vec.I2{500, 80}},
-		{BaseDoodad: baseDoodads["bench_h"], pos: vec.I2{580, 80}},
-		{BaseDoodad: baseDoodads["tree5"], pos: vec.I2{471, 141}},
-		{BaseDoodad: baseDoodads["tree5"], pos: vec.I2{511, 245}},
-		{BaseDoodad: baseDoodads["tree5"], pos: vec.I2{576, 145}},
-		{BaseDoodad: baseDoodads["tree4"], pos: vec.I2{610, 250}},
-		{BaseDoodad: baseDoodads["tree5"], pos: vec.I2{692, 148}},
-		{BaseDoodad: baseDoodads["tree7"], pos: vec.I2{760, 243}},
+		{BaseDoodad: baseDoodads["bench_h"], P: vec.I2{500, 80}},
+		{BaseDoodad: baseDoodads["bench_h"], P: vec.I2{580, 80}},
+		{BaseDoodad: baseDoodads["tree5"], P: vec.I2{471, 141}},
+		{BaseDoodad: baseDoodads["tree5"], P: vec.I2{511, 245}},
+		{BaseDoodad: baseDoodads["tree5"], P: vec.I2{576, 145}},
+		{BaseDoodad: baseDoodads["tree4"], P: vec.I2{610, 250}},
+		{BaseDoodad: baseDoodads["tree5"], P: vec.I2{692, 148}},
+		{BaseDoodad: baseDoodads["tree7"], P: vec.I2{760, 243}},
 
 		// Toward the south-west.
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{78, 643}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{99, 704}},
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{158, 773}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{121, 939}},
-		{BaseDoodad: baseDoodads["tree4"], pos: vec.I2{183, 944}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{78, 643}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{99, 704}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{158, 773}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{121, 939}},
+		{BaseDoodad: baseDoodads["tree4"], P: vec.I2{183, 944}},
 
 		// Trees in the east.
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{932, 285}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{934, 365}},
-		{BaseDoodad: baseDoodads["tree8"], pos: vec.I2{885, 645}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{937, 720}},
-		{BaseDoodad: baseDoodads["tree7"], pos: vec.I2{765, 958}},
-		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{669, 838}},
-		{BaseDoodad: baseDoodads["tree4"], pos: vec.I2{732, 831}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{932, 285}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{934, 365}},
+		{BaseDoodad: baseDoodads["tree8"], P: vec.I2{885, 645}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{937, 720}},
+		{BaseDoodad: baseDoodads["tree7"], P: vec.I2{765, 958}},
+		{BaseDoodad: baseDoodads["tree2"], P: vec.I2{669, 838}},
+		{BaseDoodad: baseDoodads["tree4"], P: vec.I2{732, 831}},
 
 		// The W tree.
 		//theW,
-		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{860, 452}},
+		{BaseDoodad: baseDoodads["tree1"], P: vec.I2{860, 452}},
 
 		// End-game in south-east.
-		{BaseDoodad: baseDoodads["alamore"], pos: vec.I2{877, 877}},
+		{BaseDoodad: baseDoodads["alamore"], P: vec.I2{877, 877}},
 	}
 }
 
@@ -97,61 +97,61 @@ func (level) Source() string {
 // TileInfos maps indexes to information about the terrain.
 func (level) TileInfos() []awakengine.TileInfo {
 	return []awakengine.TileInfo{
-		{name: "grass1", block: false}, // 0
-		{name: "grass2", block: false},
-		{name: "square2", block: true},
-		{name: "cliff", block: true},
-		{name: "black", block: true},
-		{name: "grass_edge_d", block: false}, // 5
-		{name: "black_edge_u", block: true},
-		{name: "brick_wall", block: true},
-		{name: "brick_wall_edge_l", block: true},
-		{name: "brick_wall_edge_r", block: true},
-		{name: "water_edge_r", block: true}, // 10
-		{name: "water_edge_l", block: true},
-		{name: "grey", block: true},
-		{name: "grass_corner_rd", block: false},
-		{name: "grass_corner_ld", block: false},
-		{name: "hole", block: true}, //15
-		{name: "pyramid", block: true},
-		{name: "wire_fence", block: true},
-		{name: "water_edge_ulcc", block: true},
-		{name: "water_edge_ulcv", block: true},
-		{name: "water_edge_u", block: true}, //20
-		{name: "water_edge_urcv", block: true},
-		{name: "water", block: true},
-		{name: "water_edge_urcc", block: true},
-		{name: "tall_grass", block: false},
-		{name: "path_corner_dl", block: false}, //25
-		{name: "path_corner_dr", block: false},
-		{name: "path_corner_ur", block: false},
-		{name: "path_corner_ul", block: false},
-		{name: "path_h", block: false},
-		{name: "path_v", block: false}, //30
-		{name: "path_d", block: false},
-		{name: "path_r", block: false},
-		{name: "path_l", block: false},
-		{name: "path_u", block: false},
-		{name: "roof_dl", block: true}, //35
-		{name: "roof_ul", block: true},
-		{name: "roof_dr", block: true},
-		{name: "roof_ur", block: true},
-		{name: "roof_l", block: true},
-		{name: "roof_r", block: true}, //40
-		{name: "roof_d", block: true},
-		{name: "roof_u", block: true},
-		{name: "roof", block: true},
-		{name: "water_edge_drcc", block: true},
-		{name: "water_edge_d", block: true}, //45
-		{name: "water_edge_dlcc", block: true},
-		{name: "trees1", block: true},
-		{name: "trees2", block: true},
-		{name: "trees1_u", block: true},
-		{name: "trees2_u", block: true}, //50
-		{name: "trees1_d", block: true},
-		{name: "trees2_d", block: true},
-		{name: "pathend_r", block: false},
-		{name: "pathend_d", block: false},
+		{Name: "grass1", Block: false}, // 0
+		{Name: "grass2", Block: false},
+		{Name: "square2", Block: true},
+		{Name: "cliff", Block: true},
+		{Name: "black", Block: true},
+		{Name: "grass_edge_d", Block: false}, // 5
+		{Name: "black_edge_u", Block: true},
+		{Name: "brick_wall", Block: true},
+		{Name: "brick_wall_edge_l", Block: true},
+		{Name: "brick_wall_edge_r", Block: true},
+		{Name: "water_edge_r", Block: true}, // 10
+		{Name: "water_edge_l", Block: true},
+		{Name: "grey", Block: true},
+		{Name: "grass_corner_rd", Block: false},
+		{Name: "grass_corner_ld", Block: false},
+		{Name: "hole", Block: true}, //15
+		{Name: "pyramid", Block: true},
+		{Name: "wire_fence", Block: true},
+		{Name: "water_edge_ulcc", Block: true},
+		{Name: "water_edge_ulcv", Block: true},
+		{Name: "water_edge_u", Block: true}, //20
+		{Name: "water_edge_urcv", Block: true},
+		{Name: "water", Block: true},
+		{Name: "water_edge_urcc", Block: true},
+		{Name: "tall_grass", Block: false},
+		{Name: "path_corner_dl", Block: false}, //25
+		{Name: "path_corner_dr", Block: false},
+		{Name: "path_corner_ur", Block: false},
+		{Name: "path_corner_ul", Block: false},
+		{Name: "path_h", Block: false},
+		{Name: "path_v", Block: false}, //30
+		{Name: "path_d", Block: false},
+		{Name: "path_r", Block: false},
+		{Name: "path_l", Block: false},
+		{Name: "path_u", Block: false},
+		{Name: "roof_dl", Block: true}, //35
+		{Name: "roof_ul", Block: true},
+		{Name: "roof_dr", Block: true},
+		{Name: "roof_ur", Block: true},
+		{Name: "roof_l", Block: true},
+		{Name: "roof_r", Block: true}, //40
+		{Name: "roof_d", Block: true},
+		{Name: "roof_u", Block: true},
+		{Name: "roof", Block: true},
+		{Name: "water_edge_drcc", Block: true},
+		{Name: "water_edge_d", Block: true}, //45
+		{Name: "water_edge_dlcc", Block: true},
+		{Name: "trees1", Block: true},
+		{Name: "trees2", Block: true},
+		{Name: "trees1_u", Block: true},
+		{Name: "trees2_u", Block: true}, //50
+		{Name: "trees1_d", Block: true},
+		{Name: "trees2_d", Block: true},
+		{Name: "pathend_r", Block: false},
+		{Name: "pathend_d", Block: false},
 	}
 }
 
