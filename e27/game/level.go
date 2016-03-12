@@ -1,70 +1,32 @@
 package game
 
-var (
-	tileInfo = []awakengine.TileInfo{
-		{name: "grass1", block: false}, // 0
-		{name: "grass2", block: false},
-		{name: "square2", block: true},
-		{name: "cliff", block: true},
-		{name: "black", block: true},
-		{name: "grass_edge_d", block: false}, // 5
-		{name: "black_edge_u", block: true},
-		{name: "brick_wall", block: true},
-		{name: "brick_wall_edge_l", block: true},
-		{name: "brick_wall_edge_r", block: true},
-		{name: "water_edge_r", block: true}, // 10
-		{name: "water_edge_l", block: true},
-		{name: "grey", block: true},
-		{name: "grass_corner_rd", block: false},
-		{name: "grass_corner_ld", block: false},
-		{name: "hole", block: true}, //15
-		{name: "pyramid", block: true},
-		{name: "wire_fence", block: true},
-		{name: "water_edge_ulcc", block: true},
-		{name: "water_edge_ulcv", block: true},
-		{name: "water_edge_u", block: true}, //20
-		{name: "water_edge_urcv", block: true},
-		{name: "water", block: true},
-		{name: "water_edge_urcc", block: true},
-		{name: "tall_grass", block: false},
-		{name: "path_corner_dl", block: false}, //25
-		{name: "path_corner_dr", block: false},
-		{name: "path_corner_ur", block: false},
-		{name: "path_corner_ul", block: false},
-		{name: "path_h", block: false},
-		{name: "path_v", block: false}, //30
-		{name: "path_d", block: false},
-		{name: "path_r", block: false},
-		{name: "path_l", block: false},
-		{name: "path_u", block: false},
-		{name: "roof_dl", block: true}, //35
-		{name: "roof_ul", block: true},
-		{name: "roof_dr", block: true},
-		{name: "roof_ur", block: true},
-		{name: "roof_l", block: true},
-		{name: "roof_r", block: true}, //40
-		{name: "roof_d", block: true},
-		{name: "roof_u", block: true},
-		{name: "roof", block: true},
-		{name: "water_edge_drcc", block: true},
-		{name: "water_edge_d", block: true}, //45
-		{name: "water_edge_dlcc", block: true},
-		{name: "trees1", block: true},
-		{name: "trees2", block: true},
-		{name: "trees1_u", block: true},
-		{name: "trees2_u", block: true}, //50
-		{name: "trees1_d", block: true},
-		{name: "trees2_d", block: true},
-		{name: "pathend_r", block: false},
-		{name: "pathend_d", block: false},
-	}
+import (
+	"github.com/DrJosh9000/awakengine"
+	"github.com/DrJosh9000/vec"
+)
 
+const (
+	tileSize  = 32 // pixels on the edge of a square tile
+	blackTile = 4
+
+	level1Key  = "level1"
+	tileMapKey = "tiles"
+)
+
+var (
+	// TODO: theW should be a Unit.
 	theW = &Doodad{
 		BaseDoodad: baseDoodads["W"],
 		pos:        vec.I2{860, 453},
 	}
+)
 
-	doodads = []*awakengine.Doodad{
+type level struct{}
+
+// Doodads provides objects above the base, that can be flattened onto the terrain
+// most of the time.
+func (level) Doodads() []*awakengine.Doodad {
+	return []*awakengine.Doodad{
 		// Above the north building.
 		{BaseDoodad: baseDoodads["tree1"], pos: vec.I2{122, 200}},
 		{BaseDoodad: baseDoodads["tree2"], pos: vec.I2{150, 80}},
@@ -124,4 +86,80 @@ var (
 		// End-game in south-east.
 		{BaseDoodad: baseDoodads["alamore"], pos: vec.I2{877, 877}},
 	}
-)
+}
+
+// Source is the paletted PNG to use as the base terrain layer - pixel at (x,y) becomes
+// the tile at (x,y).
+func (level) Source() string {
+	return level1Key
+}
+
+// TileInfos maps indexes to information about the terrain.
+func (level) TileInfos() []awakengine.TileInfo {
+	return []awakengine.TileInfo{
+		{name: "grass1", block: false}, // 0
+		{name: "grass2", block: false},
+		{name: "square2", block: true},
+		{name: "cliff", block: true},
+		{name: "black", block: true},
+		{name: "grass_edge_d", block: false}, // 5
+		{name: "black_edge_u", block: true},
+		{name: "brick_wall", block: true},
+		{name: "brick_wall_edge_l", block: true},
+		{name: "brick_wall_edge_r", block: true},
+		{name: "water_edge_r", block: true}, // 10
+		{name: "water_edge_l", block: true},
+		{name: "grey", block: true},
+		{name: "grass_corner_rd", block: false},
+		{name: "grass_corner_ld", block: false},
+		{name: "hole", block: true}, //15
+		{name: "pyramid", block: true},
+		{name: "wire_fence", block: true},
+		{name: "water_edge_ulcc", block: true},
+		{name: "water_edge_ulcv", block: true},
+		{name: "water_edge_u", block: true}, //20
+		{name: "water_edge_urcv", block: true},
+		{name: "water", block: true},
+		{name: "water_edge_urcc", block: true},
+		{name: "tall_grass", block: false},
+		{name: "path_corner_dl", block: false}, //25
+		{name: "path_corner_dr", block: false},
+		{name: "path_corner_ur", block: false},
+		{name: "path_corner_ul", block: false},
+		{name: "path_h", block: false},
+		{name: "path_v", block: false}, //30
+		{name: "path_d", block: false},
+		{name: "path_r", block: false},
+		{name: "path_l", block: false},
+		{name: "path_u", block: false},
+		{name: "roof_dl", block: true}, //35
+		{name: "roof_ul", block: true},
+		{name: "roof_dr", block: true},
+		{name: "roof_ur", block: true},
+		{name: "roof_l", block: true},
+		{name: "roof_r", block: true}, //40
+		{name: "roof_d", block: true},
+		{name: "roof_u", block: true},
+		{name: "roof", block: true},
+		{name: "water_edge_drcc", block: true},
+		{name: "water_edge_d", block: true}, //45
+		{name: "water_edge_dlcc", block: true},
+		{name: "trees1", block: true},
+		{name: "trees2", block: true},
+		{name: "trees1_u", block: true},
+		{name: "trees2_u", block: true}, //50
+		{name: "trees1_d", block: true},
+		{name: "trees2_d", block: true},
+		{name: "pathend_r", block: false},
+		{name: "pathend_d", block: false},
+	}
+}
+
+// Tiles is an image containing square tiles.
+func (level) Tiles() (key string, tileSize int) {
+	return tileMapKey, tileSize
+}
+
+func (*Game) Level() Level {
+	return level{}
+}
