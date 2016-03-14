@@ -6,19 +6,10 @@ import (
 )
 
 const (
-	tileSize  = 32 // pixels on the edge of a square tile
-	blackTile = 4
+	tileSize = 32 // pixels on the edge of a square tile
 
 	level1Key  = "level1"
 	tileMapKey = "tiles"
-)
-
-var (
-	// TODO: theW should be a Unit.
-	theW = &Doodad{
-		BaseDoodad: baseDoodads["W"],
-		P:          vec.I2{860, 453},
-	}
 )
 
 type level struct{}
@@ -155,11 +146,11 @@ func (level) TileInfos() []awakengine.TileInfo {
 	}
 }
 
-// Tiles is an image containing square tiles.
-func (level) Tiles() (key string, tileSize int) {
+// Tiles is an image containing square tiles, and the size of each tile.
+func (level) Tiles() (string, int) {
 	return tileMapKey, tileSize
 }
 
-func (*Game) Level() Level {
+func (*Game) Level() awakengine.Level {
 	return level{}
 }

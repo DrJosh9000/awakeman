@@ -17,10 +17,7 @@ var (
 
 func main() {
 	flag.Parse()
-	if err := awakengine.Load(game.New(*levelPreview), *debug); err != nil {
-		log.Fatalf("Cannot load game: %v", err)
-	}
-	if err := awakengine.Run(*recordingFile, *recordingFrames); err != nil {
+	if err := awakengine.Run(game.New(*levelPreview), *debug, *recordingFile, *recordingFrames); err != nil {
 		log.Fatalf("Cannot run game: %v", err)
 	}
 }

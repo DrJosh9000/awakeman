@@ -5,18 +5,29 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-const windowTitle = "A walk in the park"
+const (
+	// One frame of animation for every (animationPeriod) frames rendered.
+	// So animation FPS = 60 / animationPeriod.
+	animPeriod = 3
+
+	windowTitle = "A walk in the park"
+)
 
 var (
 	goalAckMarker = &awakengine.Transient{
-		Anim: &Anim{
+		A: &awakengine.Anim{
 			Key:       "mark",
 			Offset:    vec.I2{15, 15},
 			Frames:    4,
 			FrameSize: vec.I2{32, 32},
 			Mode:      awakengine.AnimOneShot,
 		},
-		birth: -999,
+		Birth: -999,
+	}
+
+	theW = &awakengine.Doodad{
+		BaseDoodad: baseDoodads["W"],
+		P:          vec.I2{860, 453},
 	}
 )
 
@@ -42,12 +53,21 @@ func New(levelPreview bool) *Game {
 	}
 }
 
-// Units provides all units in the level.
-func (*Game) Units() []awakengine.Unit {
-	return nil
+// Player returns the player unit.
+func (*Game) Player() awakengine.Unit {
+	return player
+}
+
+// Sprites provides all sprites in the level.
+func (*Game) Sprites() []awakengine.Sprite {
+	return []awakengine.Sprite{
+		player,
+		goalAckMarker,
+		theW,
+	}
 }
 
 // Viewport is the size of the window and the pixels in the window.
-func (*Game) Viewport() (camSize vec.I2, pixelSize int, title string) {
-	return camSize, pixelSize, windowTitle
+func (g *Game) Viewport() (cs vec.I2, ps, ap int, title string) {
+	return g.camSize, g.pixelSize, animPeriod, windowTitle
 }

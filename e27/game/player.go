@@ -1,8 +1,6 @@
 package game
 
 import (
-	"log"
-
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
 )
@@ -12,68 +10,68 @@ const playerSpeed = 1
 var (
 	playerAnims = map[PlayerState]*awakengine.Anim{
 		{playerWalking, vec.Left}: {
-			imgKey:    "walk_l",
-			offset:    vec.I2{8, 31},
-			frames:    7,
-			frameSize: vec.I2{16, 32},
-			mode:      AnimLoop,
+			Key:       "walk_l",
+			Offset:    vec.I2{8, 31},
+			Frames:    7,
+			FrameSize: vec.I2{16, 32},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerWalking, vec.Right}: {
-			imgKey:    "walk_r",
-			offset:    vec.I2{7, 31},
-			frames:    7,
-			frameSize: vec.I2{16, 32},
-			mode:      AnimLoop,
+			Key:       "walk_r",
+			Offset:    vec.I2{7, 31},
+			Frames:    7,
+			FrameSize: vec.I2{16, 32},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerWalking, vec.Up}: {
-			imgKey:    "walk_u",
-			offset:    vec.I2{7, 27},
-			frames:    14,
-			frameSize: vec.I2{16, 33},
-			mode:      AnimLoop,
+			Key:       "walk_u",
+			Offset:    vec.I2{7, 27},
+			Frames:    14,
+			FrameSize: vec.I2{16, 33},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerWalking, vec.Down}: {
-			imgKey:    "walk_d",
-			offset:    vec.I2{7, 27},
-			frames:    14,
-			frameSize: vec.I2{16, 33},
-			mode:      AnimLoop,
+			Key:       "walk_d",
+			Offset:    vec.I2{7, 27},
+			Frames:    14,
+			FrameSize: vec.I2{16, 33},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Left}: {
-			imgKey:    "idle_l",
-			offset:    vec.I2{7, 31},
-			frames:    1,
-			frameSize: vec.I2{16, 32},
-			mode:      AnimLoop,
+			Key:       "idle_l",
+			Offset:    vec.I2{7, 31},
+			Frames:    1,
+			FrameSize: vec.I2{16, 32},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Up}: {
-			imgKey:    "idle_l",
-			offset:    vec.I2{7, 31},
-			frames:    1,
-			frameSize: vec.I2{16, 32},
-			mode:      AnimLoop,
+			Key:       "idle_l",
+			Offset:    vec.I2{7, 31},
+			Frames:    1,
+			FrameSize: vec.I2{16, 32},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Right}: {
-			imgKey:    "idle_r",
-			offset:    vec.I2{9, 31},
-			frames:    1,
-			frameSize: vec.I2{16, 32},
-			mode:      AnimLoop,
+			Key:       "idle_r",
+			Offset:    vec.I2{9, 31},
+			Frames:    1,
+			FrameSize: vec.I2{16, 32},
+			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Down}: {
-			imgKey:    "idle_r",
-			offset:    vec.I2{9, 31},
-			frames:    1,
-			frameSize: vec.I2{16, 32},
-			mode:      AnimLoop,
+			Key:       "idle_r",
+			Offset:    vec.I2{9, 31},
+			Frames:    1,
+			FrameSize: vec.I2{16, 32},
+			Mode:      awakengine.AnimLoop,
 		},
 	}
 
 	player = &Player{
 		pos: vec.F2{32 * 9, 32 * 10},
 	}
-	playerFatUL = vec.I2{-4, -1}
-	playerFatDR = vec.I2{3, 5}
+	playerUL = vec.I2{-3, -5}
+	playerDR = vec.I2{4, 1}
 )
 
 // PlayerState describes the current simple state of the player: what are they doing,
@@ -109,10 +107,11 @@ func (p *Player) Frame() int { return p.frame }
 func (p *Player) Pos() vec.I2 { return p.pos.I2() }
 
 // Footprint implements awakengine.Unit.
-func (p *Player) Footprint() (ul, dr vec.I2) { return playerFatUL, playerFatDL }
+func (p *Player) Footprint() (ul, dr vec.I2) { return playerUL, playerDR }
 
 // GoIdle implements awakengine.Unit.
 func (p *Player) GoIdle() {
+	p.frame = 0
 	p.state.a = playerIdle
 	p.path = nil
 }
@@ -124,31 +123,9 @@ func (p *Player) Path() []vec.I2 { return p.path }
 func (p *Player) Update(frame int, event awakengine.Event) {
 	if event.Type == awakengine.EventMouseUp {
 		c := event.Pos
-		goalAckMarker.birth = frame
-		goalAckMarker.pos = c
-		path, err := vec.FindPath(obstacles, paths, p.Pos(), c, camPos, camPos.Add(camSize))
-		if err != nil {
-			// Go near to the cursor position.
-			e, q := obstacles.NearestPoint(c)
-			if Debug {
-				log.Printf("nearest edge: %v point: %v", e, q)
-			}
-			q = q.Add(e.V.Sub(e.U).Normal().Sgn()) // Adjust it slightly...
-			path2, err2 := vec.FindPath(obstacles, paths, p.Pos(), q, camPos, camPos.Add(camSize))
-			if err2 != nil {
-				// Ok... Go as far as we can go.
-				p2, y := obstacles.NearestBlock(p.Pos(), c)
-				if y {
-					c = p2.Sub(p2.Sub(p.Pos()).Sgn())
-				}
-				path2 = []vec.I2{c}
-			}
-			path = path2
-		}
-		p.path = path
-		if Debug {
-			log.Printf("path: %v", path)
-		}
+		goalAckMarker.Birth = frame
+		goalAckMarker.P = c
+		p.path = awakengine.Navigate(p.Pos(), c)
 	}
 
 	if len(p.path) > 0 {
@@ -164,21 +141,18 @@ func (p *Player) Update(frame int, event awakengine.Event) {
 				np = d.Norm()
 			} else {
 				p.pos = p.path[0].F2()
-				p.path = nil
-				p.frame = 0
-				p.state.a = playerIdle
+				p.GoIdle()
 				return
 			}
 		}
 		p.state.a = playerWalking
 		p.state.d = d.Dir()
-		if frame%animationPeriod == 0 {
+		if frame%animPeriod == 0 {
 			// Player walks straight there.
 			p.pos = p.pos.Add(d.Mul(playerSpeed / np))
 			p.frame++
 		}
 	} else {
-		p.frame = 0
-		p.state.a = playerIdle // preserve direction
+		p.GoIdle()
 	}
 }

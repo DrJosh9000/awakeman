@@ -11,6 +11,7 @@ func init() {
 	awakengine.RegisterImage("doodads", assets.DoodadsPNG)
 	awakengine.RegisterImage("idle_l", assets.PlayerIdleLPNG)
 	awakengine.RegisterImage("idle_r", assets.PlayerIdleRPNG)
+	awakengine.RegisterImage("level1", assets.Level1PNG)
 	awakengine.RegisterImage("mark", assets.MarkPNG)
 	awakengine.RegisterImage("munro", assets.MunroPNG)
 	awakengine.RegisterImage("tiles", assets.TilesPNG)
