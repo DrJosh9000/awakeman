@@ -108,7 +108,19 @@ func (p *Player) Frame() int { return p.frame }
 // Pos implements awakengine.Sprite.
 func (p *Player) Pos() vec.I2 { return p.pos.I2() }
 
-// Update responds to the passage of time, or user input by adjusting the player state.
+// Footprint implements awakengine.Unit.
+func (p *Player) Footprint() (ul, dr vec.I2) { return playerFatUL, playerFatDL }
+
+// GoIdle implements awakengine.Unit.
+func (p *Player) GoIdle() {
+	p.state.a = playerIdle
+	p.path = nil
+}
+
+// Path implements awakengine.Unit.
+func (p *Player) Path() []vec.I2 { return p.path }
+
+// Update implements awakengine.Unit.
 func (p *Player) Update(frame int, event awakengine.Event) {
 	if event.Type == awakengine.EventMouseUp {
 		c := event.Pos
