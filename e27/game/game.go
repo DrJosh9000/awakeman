@@ -67,6 +67,11 @@ func New(levelPreview bool) *Game {
 	}
 }
 
+// Font returns the default typeface.
+func (*Game) Font() awakengine.Font {
+	return MunroFont{}
+}
+
 // Player returns the player unit.
 func (*Game) Player() awakengine.Unit {
 	return player
