@@ -1,2 +1,17 @@
+// Copyright 2016 Josh Deprez
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package assets
+
 var PlayerIdleRPNG = []byte("\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x10\x00\x00\x00 \b\x06\x00\x00\x00\x1b\x89\xf8\xcc\x00\x00\x00\x89IDATH\x89\xd5T\xd1\n\xc0 \b\xcc\xfd\xff?\xdf^&\x98yas ;\x88\xa0\xec\xd2\xf3j\x8c\xdfCv\x9b\x000\x05\x8bl\xe3\xa3\xc3\xd3\xf0\x844\x03\x00\x10\x91\xe1\xe3u\xcdf\xb2\x10\xb0Ì\xe4J\xd7D\xd0OP\x16\x91\"\xdb\xc6\x14\x89\"\x8aIk\xc0\xd2.\x8bH\xe158\xaa\xdf\xd6\x1e\xcc\x13\xbe7\x12\xf3\xc0\xd3\xff\xe5\x89\xf7[\xb9\x9f \x84\n\xe5ۗn#\xb3m\xb4\xdeo\xe5\xf4\x87\xf2\xea3\xb1\xb7\xb2\xf7\xd0\xef\x832\xc1\r+\xb9\xaa\xb9H\xa4\x91\xd8\x00\x00\x00\x00IEND\xaeB`\x82")
