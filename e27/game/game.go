@@ -15,6 +15,7 @@
 package game
 
 import (
+	"github.com/DrJosh9000/awakeman/common"
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
 )
@@ -69,7 +70,7 @@ func New(levelPreview bool) *Game {
 
 // Font returns the default typeface.
 func (*Game) Font() awakengine.Font {
-	return MunroFont{}
+	return common.MunroFont{}
 }
 
 // Player returns the player unit.
