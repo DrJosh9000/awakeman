@@ -12,17 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package game
+package common
 
 import (
-	_ "github.com/DrJosh9000/awakeman/common"
-	"github.com/DrJosh9000/awakeman/e27/assets"
+	"github.com/DrJosh9000/awakeman/common/assets"
 	"github.com/DrJosh9000/awakengine"
 )
 
 func init() {
-	awakengine.RegisterImage("doodads", assets.DoodadsPNG)
-	awakengine.RegisterImage("level1", assets.Level1PNG)
-	awakengine.RegisterImage("tiles", assets.TilesPNG)
-	awakengine.RegisterImage("trees", assets.TreesPNG)
+	awakengine.RegisterImage("avatars", assets.AvatarsPNG)
+	awakengine.RegisterImage("bubble", assets.BubblePNG)
+	awakengine.RegisterImage("idle_l", assets.PlayerIdleLPNG)
+	awakengine.RegisterImage("idle_r", assets.PlayerIdleRPNG)
+	awakengine.RegisterImage("mark", assets.MarkPNG)
+	awakengine.RegisterImage("munro", assets.MunroPNG)
+	awakengine.RegisterImage("walk_d", assets.PlayerWalkDPNG)
+	awakengine.RegisterImage("walk_l", assets.PlayerWalkLPNG)
+	awakengine.RegisterImage("walk_r", assets.PlayerWalkRPNG)
+	awakengine.RegisterImage("walk_u", assets.PlayerWalkUPNG)
 }
