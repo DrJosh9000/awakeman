@@ -20,7 +20,8 @@ import (
 )
 
 const (
-	tileSize = 32 // pixels on the edge of a square tile
+	tileSize    = 32 // pixels on the edge of a square tile
+	blockHeight = 0  // Introduced in a later engine.
 
 	level1Key  = "level1"
 	tileMapKey = "tiles"
@@ -161,8 +162,8 @@ func (level) TileInfos() []awakengine.TileInfo {
 }
 
 // Tiles is an image containing square tiles, and the size of each tile.
-func (level) Tiles() (string, int) {
-	return tileMapKey, tileSize
+func (level) Tiles() (string, int, int) {
+	return tileMapKey, tileSize, blockHeight
 }
 
 func (*Game) Level() awakengine.Level {

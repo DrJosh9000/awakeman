@@ -121,10 +121,17 @@ var (
 )
 
 // MunroFont implements awakengine.Font with the Munro typeface.
-type MunroFont struct{}
+type MunroFont struct {
+	Invert bool
+}
 
 // Source implements awkaengine.Font.
-func (MunroFont) Source() string { return "munro" }
+func (m MunroFont) Source() string {
+	if m.Invert {
+		return "inv_munro"
+	}
+	return "munro"
+}
 
 // Metrics implements awakengine.Font.
 func (MunroFont) Metrics() awakengine.CharMetrics { return munroMap }

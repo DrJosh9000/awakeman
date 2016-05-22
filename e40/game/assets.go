@@ -16,14 +16,15 @@ package game
 
 import (
 	"github.com/DrJosh9000/awakeman/common"
-	"github.com/DrJosh9000/awakeman/e27/assets"
+	"github.com/DrJosh9000/awakeman/e40/assets"
 	"github.com/DrJosh9000/awakengine"
 )
 
 func init() {
-	common.RegisterBoWAssets()
-	awakengine.RegisterImage("doodads", assets.DoodadsPNG)
-	awakengine.RegisterImage("level1", assets.Level1PNG)
-	awakengine.RegisterImage("tiles", assets.TilesPNG)
-	awakengine.RegisterImage("trees", assets.TreesPNG)
+	common.RegisterWoBAssets()
+	awakengine.RegisterImage("black16", assets.Black16PNG)
+	awakengine.RegisterImage("level2tilemap", assets.Level2TileMapPNG)
+	awakengine.RegisterImage("level2blockmap", assets.Level2BlockMapPNG)
+	awakengine.RegisterImage("librarytiles", assets.LibraryTilesPNG)
+	awakengine.RegisterImage("prism", assets.PrismPNG)
 }

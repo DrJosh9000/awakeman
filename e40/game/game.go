@@ -25,24 +25,19 @@ const (
 	// So animation FPS = 60 / animationPeriod.
 	animPeriod = 3
 
-	windowTitle = "A walk in the park"
+	windowTitle = "Find some missing keys"
 )
 
 var (
 	goalAckMarker = &awakengine.Transient{
 		A: &awakengine.Anim{
-			Key:       "mark",
+			Key:       "inv_mark",
 			Offset:    vec.I2{15, 15},
 			Frames:    4,
 			FrameSize: vec.I2{32, 32},
 			Mode:      awakengine.AnimOneShot,
 		},
 		Birth: -999,
-	}
-
-	theW = &awakengine.Doodad{
-		BaseDoodad: baseDoodads["W"],
-		P:          vec.I2{860, 453},
 	}
 )
 
@@ -59,7 +54,8 @@ func New(levelPreview bool) *Game {
 	cs := vec.I2{267, 150}
 	if levelPreview {
 		ps = 1
-		cs = vec.I2{1024, 1024}
+		//cs = vec.I2{1024, 512}
+		cs = vec.I2{512, 256}
 	}
 	return &Game{
 		pixelSize:    ps,
@@ -68,11 +64,13 @@ func New(levelPreview bool) *Game {
 	}
 }
 
-func (*Game) BubbleKey() string { return "bubble" }
+func (*Game) BubbleKey() string { return "inv_bubble" }
 
 // Font returns the default typeface.
 func (*Game) Font() awakengine.Font {
-	return common.MunroFont{}
+	return common.MunroFont{
+		Invert: true,
+	}
 }
 
 // Player returns the player unit.
@@ -81,11 +79,10 @@ func (*Game) Player() awakengine.Unit {
 }
 
 // Sprites provides all sprites in the level.
-func (*Game) Sprites() []awakengine.Sprite {
-	return []awakengine.Sprite{
+func (*Game) Objects() []awakengine.Object {
+	return []awakengine.Object{
 		player,
 		goalAckMarker,
-		theW,
 	}
 }
 

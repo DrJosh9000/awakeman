@@ -19,7 +19,8 @@ import (
 	"github.com/DrJosh9000/awakengine"
 )
 
-func init() {
+func RegisterBoWAssets() {
+	// Black-on-white assets.
 	awakengine.RegisterImage("avatars", assets.AvatarsPNG)
 	awakengine.RegisterImage("bubble", assets.BubblePNG)
 	awakengine.RegisterImage("idle_l", assets.PlayerIdleLPNG)
@@ -30,4 +31,18 @@ func init() {
 	awakengine.RegisterImage("walk_l", assets.PlayerWalkLPNG)
 	awakengine.RegisterImage("walk_r", assets.PlayerWalkRPNG)
 	awakengine.RegisterImage("walk_u", assets.PlayerWalkUPNG)
+}
+
+func RegisterWoBAssets() {
+	// White-on-black assets.
+	awakengine.RegisterImage("inv_avatars", assets.InvAvatarsPNG)
+	awakengine.RegisterImage("inv_bubble", assets.InvBubblePNG)
+	awakengine.RegisterImage("inv_idle_l", assets.InvPlayerIdleLPNG)
+	awakengine.RegisterImage("inv_idle_r", assets.InvPlayerIdleRPNG)
+	awakengine.RegisterImage("inv_mark", assets.InvMarkPNG)
+	awakengine.RegisterImage("inv_munro", assets.InvMunroPNG)
+	awakengine.RegisterImage("inv_walk_d", assets.InvPlayerWalkDPNG)
+	awakengine.RegisterImage("inv_walk_l", assets.InvPlayerWalkLPNG)
+	awakengine.RegisterImage("inv_walk_r", assets.InvPlayerWalkRPNG)
+	awakengine.RegisterImage("inv_walk_u", assets.InvPlayerWalkUPNG)
 }

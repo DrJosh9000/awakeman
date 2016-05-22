@@ -12,18 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package game
+package main
 
 import (
-	"github.com/DrJosh9000/awakeman/common"
-	"github.com/DrJosh9000/awakeman/e27/assets"
+	"flag"
+	"log"
+
+	"github.com/DrJosh9000/awakeman/e40/game"
 	"github.com/DrJosh9000/awakengine"
 )
 
-func init() {
-	common.RegisterBoWAssets()
-	awakengine.RegisterImage("doodads", assets.DoodadsPNG)
-	awakengine.RegisterImage("level1", assets.Level1PNG)
-	awakengine.RegisterImage("tiles", assets.TilesPNG)
-	awakengine.RegisterImage("trees", assets.TreesPNG)
+var (
+	debug           = flag.Bool("debug", false, "Enables debug visualisations.")
+	levelPreview    = flag.Bool("levelpreview", false, "Draw a huge level, but have no triggers.")
+	recordingFile   = flag.String("r", "", "If set, records a GIF of the screen to this file.")
+	recordingFrames = flag.Int("frames", 120, "The number of frames to record into the GIF.")
+)
+
+func main() {
+	flag.Parse()
+	if err := awakengine.Run(game.New(*levelPreview), *debug, *recordingFile, *recordingFrames); err != nil {
+		log.Fatalf("Cannot run game: %v", err)
+	}
 }

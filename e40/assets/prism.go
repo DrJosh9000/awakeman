@@ -1,0 +1,20 @@
+// Copyright 2016 Josh Deprez
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package assets
+
+var (
+	PrismPNG   = []byte("\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00 \x00\x00\x000\b\x06\x00\x00\x00p\xacxo\x00\x00\x00jIDATX\x85\xed\u0631\r\x00!\fC\xd1\xe4\xf6\xdf\xd94\xdc\x02\xb1\xa5P\xfc4\xa1\x01=\xdc\x10\xd1e\x96$9\xfb?\x17PU\xd5\xdd=\xe9\x91\u04ad\u007f=\xe96`\xdac\x00\x12 \x01\x12 \x01\x12p\x10\xf6\xab\x14\xb9\xc5\x16@\x92\"\xf3\x80S\x00\x00\x00\x00\x00\x00\x00\x80\x18`e\x1et\x0fb \x01\x00\x00\x00\x00\x00O\x00\xd6\xff\a\x0eGR\nn\x0fP\x1b9\x00\x00\x00\x00IEND\xaeB`\x82")
+	Black16PNG = []byte("\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x10\x00\x00\x00\x10\b\x06\x00\x00\x00\x1f\xf3\xffa\x00\x00\x00\x1dIDAT8\x8dcd``\xf8\xcf@\x01`\xa2D\xf3\xa8\x01\xa3\x06\x8c\x1a0\x98\f\x00\x00M@\x01\x1f\x80dJL\x00\x00\x00\x00IEND\xaeB`\x82")
+)
