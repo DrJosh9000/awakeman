@@ -44,6 +44,7 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 		"startGame": {
 			Active: func(int) bool { return true },
 			Dialogues: []awakengine.DialogueLine{
+				{avatarsAnim, avatarNone, "ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n1234567890!@#$%%^&*();':\",./<>?"},
 				{avatarsAnim, avatarNone, "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)"},
 				{avatarsAnim, avatarAwakeman, `*sigh*`},
 				{avatarsAnim, avatarDucky, `Quack?`},

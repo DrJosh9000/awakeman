@@ -126,7 +126,7 @@ type MunroFont struct {
 }
 
 // Source implements awkaengine.Font.
-func (m MunroFont) Source() string {
+func (m MunroFont) ImageKey() string {
 	if m.Invert {
 		return "inv_munro"
 	}

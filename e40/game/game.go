@@ -28,19 +28,6 @@ const (
 	windowTitle = "Find some missing keys"
 )
 
-var (
-	goalAckMarker = &awakengine.Transient{
-		A: &awakengine.Anim{
-			Key:       "inv_mark",
-			Offset:    vec.I2{15, 15},
-			Frames:    4,
-			FrameSize: vec.I2{32, 32},
-			Mode:      awakengine.AnimOneShot,
-		},
-		Birth: -999,
-	}
-)
-
 // Game implements awakengine.Game
 type Game struct {
 	pixelSize    int
@@ -78,11 +65,11 @@ func (*Game) Player() awakengine.Unit {
 	return player
 }
 
-// Sprites provides all sprites in the level.
+// Objects provides all sprites in the level.
 func (*Game) Objects() []awakengine.Object {
 	return []awakengine.Object{
-		player,
-		goalAckMarker,
+		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
+		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
 	}
 }
 

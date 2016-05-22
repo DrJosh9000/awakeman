@@ -28,56 +28,48 @@ var (
 			Offset:    vec.I2{8, 31},
 			Frames:    7,
 			FrameSize: vec.I2{16, 32},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerWalking, vec.Right}: {
 			Key:       "inv_walk_r",
 			Offset:    vec.I2{7, 31},
 			Frames:    7,
 			FrameSize: vec.I2{16, 32},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerWalking, vec.Up}: {
 			Key:       "inv_walk_u",
 			Offset:    vec.I2{7, 27},
 			Frames:    14,
 			FrameSize: vec.I2{16, 33},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerWalking, vec.Down}: {
 			Key:       "inv_walk_d",
 			Offset:    vec.I2{7, 27},
 			Frames:    14,
 			FrameSize: vec.I2{16, 33},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Left}: {
 			Key:       "inv_idle_l",
 			Offset:    vec.I2{7, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Up}: {
 			Key:       "inv_idle_l",
 			Offset:    vec.I2{7, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Right}: {
 			Key:       "inv_idle_r",
 			Offset:    vec.I2{9, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
-			Mode:      awakengine.AnimLoop,
 		},
 		{playerIdle, vec.Down}: {
 			Key:       "inv_idle_r",
 			Offset:    vec.I2{9, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
-			Mode:      awakengine.AnimLoop,
 		},
 	}
 
@@ -111,34 +103,28 @@ type Player struct {
 	state PlayerState
 }
 
-// Anim implements awakengine.Sprite.
-func (p *Player) Anim() *awakengine.Anim { return playerAnims[p.state] }
+func (p *Player) InWorld() bool { return true }
+func (p *Player) Retire() bool  { return false }
+func (p *Player) Visible() bool { return true }
+func (p *Player) Z() int        { return p.Pos().Y }
 
-// Frame implements awakengine.Sprite.
-func (p *Player) Frame() int { return p.frame }
-
-// Pos implements awakengine.Sprite.
-func (p *Player) Pos() vec.I2 { return p.pos.I2() }
-
-// Footprint implements awakengine.Unit.
+func (p *Player) Anim() *awakengine.Anim     { return playerAnims[p.state] }
+func (p *Player) Frame() int                 { return p.frame }
+func (p *Player) Pos() vec.I2                { return p.pos.I2() }
 func (p *Player) Footprint() (ul, dr vec.I2) { return playerUL, playerDR }
 
-// GoIdle implements awakengine.Unit.
 func (p *Player) GoIdle() {
 	p.frame = 0
 	p.state.a = playerIdle
 	p.path = nil
 }
 
-// Path implements awakengine.Unit.
 func (p *Player) Path() []vec.I2 { return p.path }
 
-// Update implements awakengine.Unit.
 func (p *Player) Update(frame int, event awakengine.Event) {
 	if event.Type == awakengine.EventMouseUp {
 		c := event.Pos
-		goalAckMarker.Birth = frame
-		goalAckMarker.P = c
+		goalAckMarker.begin(c, frame)
 		p.path = awakengine.Navigate(p.Pos(), c)
 	}
 
