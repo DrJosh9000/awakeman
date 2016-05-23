@@ -41,13 +41,18 @@ func (*Game) Level() (*awakengine.Level, error) {
 		BlockMap: bm,
 		TileInfos: []awakengine.TileInfo{
 			{Name: "black"},
+			{Name: "brick"},
 		},
 		BlockInfos: []awakengine.TileInfo{
 			{Name: "black"},
 			{Name: "prism", Blocking: true},
+			{Name: "shelf_d_1", Blocking: true},
+			{Name: "shelf_d_2", Blocking: true},
+			{Name: "shelf_d_3", Blocking: true},
+			{Name: "shelf_d_4", Blocking: true},
 		},
-		TilesetKey:  "black16",
-		BlocksetKey: "prism",
+		TilesetKey:  "librarytiles",
+		BlocksetKey: "libraryblocks",
 		TileSize:    16,
 		BlockHeight: 32,
 	}, nil

@@ -25,7 +25,7 @@ const (
 	// So animation FPS = 60 / animationPeriod.
 	animPeriod = 3
 
-	windowTitle = "Find some missing keys"
+	windowTitle = "Awakeman! #40: Escape from the Dark Library"
 )
 
 // Game implements awakengine.Game
@@ -57,6 +57,13 @@ func (*Game) BubbleKey() string { return "inv_bubble" }
 func (*Game) Font() awakengine.Font {
 	return common.MunroFont{
 		Invert: true,
+	}
+}
+
+func (*Game) Handle(t int, e awakengine.Event) {
+	if e.Type == awakengine.EventMouseUp {
+		goalAckMarker.begin(e.Pos, t)
+		player.path = awakengine.Navigate(player.Pos(), e.Pos)
 	}
 }
 

@@ -74,7 +74,7 @@ var (
 	}
 
 	player = &Player{
-		pos: vec.F2{16*4 + 16, 16*2 + 16},
+		pos: vec.F2{16*8 + 8, 16*2 + 8},
 	}
 	playerUL = vec.I2{-3, -5}
 	playerDR = vec.I2{4, 1}
@@ -121,38 +121,35 @@ func (p *Player) GoIdle() {
 
 func (p *Player) Path() []vec.I2 { return p.path }
 
-func (p *Player) Update(frame int, event awakengine.Event) {
-	if event.Type == awakengine.EventMouseUp {
-		c := event.Pos
-		goalAckMarker.begin(c, frame)
-		p.path = awakengine.Navigate(p.Pos(), c)
+func (p *Player) Update(t int) {
+
+	if len(p.path) == 0 {
+		p.GoIdle()
+		return
 	}
 
-	if len(p.path) > 0 {
-		d := p.path[0].F2().Sub(p.pos)
-		np := d.Norm()
+	// Take the next pixel step
+	d := p.path[0].F2().Sub(p.pos)
+	np := d.Norm()
 
-		// If at the current point, either aim at the next point, or stop.
-		if np < 1 {
-			if len(p.path) > 1 {
-				p.pos = p.path[0].F2() // Important to stop the player clipping through the wall...
-				p.path = p.path[1:]
-				d = p.path[0].F2().Sub(p.pos)
-				np = d.Norm()
-			} else {
-				p.pos = p.path[0].F2()
-				p.GoIdle()
-				return
-			}
+	// If at the current point, either aim at the next point, or stop.
+	if np < 1 {
+		if len(p.path) > 1 {
+			p.pos = p.path[0].F2() // Important to stop the player clipping through the wall...
+			p.path = p.path[1:]
+			d = p.path[0].F2().Sub(p.pos)
+			np = d.Norm()
+		} else {
+			p.pos = p.path[0].F2()
+			p.GoIdle()
+			return
 		}
-		p.state.a = playerWalking
-		p.state.d = d.Dir()
-		if frame%animPeriod == 0 {
-			// Player walks straight there.
-			p.pos = p.pos.Add(d.Mul(playerSpeed / np))
-			p.frame++
-		}
-	} else {
-		p.GoIdle()
+	}
+	p.state.a = playerWalking
+	p.state.d = d.Dir()
+	if t%animPeriod == 0 {
+		// Player walks straight there.
+		p.pos = p.pos.Add(d.Mul(playerSpeed / np))
+		p.frame++
 	}
 }

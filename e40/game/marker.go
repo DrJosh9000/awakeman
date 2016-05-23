@@ -19,6 +19,10 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
+const (
+	ackMarkerTimePerFrame = 6
+)
+
 var goalAckMarker = &ackMarker{
 	anim: &awakengine.Anim{
 		Key:       "inv_mark",
@@ -29,10 +33,10 @@ var goalAckMarker = &ackMarker{
 }
 
 type ackMarker struct {
-	anim    *awakengine.Anim
-	birth   int
-	pos     vec.I2
-	visible bool
+	anim         *awakengine.Anim
+	birth, frame int
+	pos          vec.I2
+	visible      bool
 }
 
 func (a *ackMarker) begin(pos vec.I2, frame int) {
@@ -42,8 +46,19 @@ func (a *ackMarker) begin(pos vec.I2, frame int) {
 }
 
 func (a *ackMarker) Anim() *awakengine.Anim { return a.anim }
-func (a *ackMarker) Frame() int             { return 0 }
+func (a *ackMarker) Frame() int             { return a.frame }
 func (a *ackMarker) Pos() vec.I2            { return a.pos }
+
+func (a *ackMarker) Update(t int) {
+	if !a.visible {
+		return
+	}
+	if t < a.birth || t >= a.birth+a.anim.Frames*ackMarkerTimePerFrame {
+		a.visible = false
+		return
+	}
+	a.frame = (t - a.birth) / ackMarkerTimePerFrame
+}
 
 func (a *ackMarker) InWorld() bool { return true }
 func (a *ackMarker) Retire() bool  { return false }
