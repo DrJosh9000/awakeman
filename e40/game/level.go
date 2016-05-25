@@ -18,7 +18,6 @@ import (
 	"fmt"
 
 	"github.com/DrJosh9000/awakengine"
-	//	"github.com/DrJosh9000/vec"
 )
 
 func (*Game) Level() (*awakengine.Level, error) {
@@ -50,6 +49,27 @@ func (*Game) Level() (*awakengine.Level, error) {
 			{Name: "shelf_d_2", Blocking: true},
 			{Name: "shelf_d_3", Blocking: true},
 			{Name: "shelf_d_4", Blocking: true},
+			{Name: "shelf_r_1", Blocking: true},
+			{Name: "shelf_r_2", Blocking: true},
+			{Name: "shelf_r_3", Blocking: true},
+			{Name: "column", Blocking: true},
+			{Name: "stack", Blocking: true},
+			{Name: "desk", Blocking: true},
+			{Name: "wall_h", Blocking: true},
+			{Name: "wall_v", Blocking: true},
+			{Name: "wall_ul", Blocking: true},
+			{Name: "wall_ur", Blocking: true},
+			{Name: "wall_dr", Blocking: true},
+			{Name: "wall_dl", Blocking: true},
+			{Name: "wall_+", Blocking: true},
+			{Name: "wall_-|", Blocking: true},
+			{Name: "wall_|-", Blocking: true},
+			{Name: "wall_T'", Blocking: true},
+			{Name: "wall_T", Blocking: true},
+			{Name: "wall_hr", Blocking: true},
+			{Name: "wall_hl", Blocking: true},
+			{Name: "wall_vu", Blocking: true},
+			{Name: "wall_vd", Blocking: true},
 		},
 		TilesetKey:  "librarytiles",
 		BlocksetKey: "libraryblocks",

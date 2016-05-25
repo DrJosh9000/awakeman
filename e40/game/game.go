@@ -40,9 +40,9 @@ func New(levelPreview bool) *Game {
 	ps := 3
 	cs := vec.I2{267, 150}
 	if levelPreview {
-		ps = 1
-		//cs = vec.I2{1024, 512}
-		cs = vec.I2{512, 256}
+		ps = 2
+		cs = vec.I2{1024, 512}
+		//cs = vec.I2{512, 256}
 	}
 	return &Game{
 		pixelSize:    ps,

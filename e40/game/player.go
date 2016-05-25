@@ -74,7 +74,7 @@ var (
 	}
 
 	player = &Player{
-		pos: vec.F2{16*8 + 8, 16*2 + 8},
+		pos: vec.F2{16*8 + 8, 16*4 + 8},
 	}
 	playerUL = vec.I2{-3, -5}
 	playerDR = vec.I2{4, 1}
