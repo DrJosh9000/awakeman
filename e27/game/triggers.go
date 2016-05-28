@@ -156,11 +156,11 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 			},
 		},
 
-		// See the W, hide it behind dialogue bubble >:)
+		// See the W? Let's hide it behind dialogue bubble trololololo >:)
 		"was that a W": {
 			Active: func(int) bool { return player.Pos().InRect(vec.I2{740, 390}, vec.I2{925, 444}) },
 			Fire: func(gameFrame int) {
-				theW.P = vec.I2{-100, -100}
+				theW.V = false
 				timeOfW = gameFrame
 			},
 			Dialogues: []awakengine.DialogueLine{

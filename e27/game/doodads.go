@@ -133,7 +133,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		UL: vec.I2{1, 15},
 		DR: vec.I2{30, 24},
 	},
-	"W": {
+	/*	"W": {
 		A: &awakengine.Anim{
 			Key:       "doodads",
 			Offset:    vec.I2{16, 27},
@@ -143,7 +143,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		F:  1,
 		UL: vec.I2{3, 23},
 		DR: vec.I2{26, 29},
-	},
+	},*/
 	"puffyplant": {
 		A: &awakengine.Anim{
 			Key:       "doodads",

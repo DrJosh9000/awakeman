@@ -87,11 +87,11 @@ func (*Game) Level() (*awakengine.Level, error) {
 		MapSize: sz,
 		TileMap: tm,
 		TileInfos: []awakengine.TileInfo{
-			{Name: "grass1", Blocking: false}, // 0
+			{Name: "black", Blocking: true}, // 0
+			{Name: "grass1", Blocking: false},
 			{Name: "grass2", Blocking: false},
 			{Name: "square2", Blocking: true},
 			{Name: "cliff", Blocking: true},
-			{Name: "black", Blocking: true},
 			{Name: "grass_edge_d", Blocking: false}, // 5
 			{Name: "black_edge_u", Blocking: true},
 			{Name: "brick_wall", Blocking: true},

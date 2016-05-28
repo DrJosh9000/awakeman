@@ -28,13 +28,6 @@ const (
 	windowTitle = "A walk in the park"
 )
 
-var (
-	theW = &awakengine.Doodad{
-		BaseDoodad: baseDoodads["W"],
-		P:          vec.I2{860, 453},
-	}
-)
-
 // Game implements awakengine.Game
 type Game struct {
 	pixelSize    int
