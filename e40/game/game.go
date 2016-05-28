@@ -59,6 +59,9 @@ func (*Game) Handle(t int, e awakengine.Event) {
 		goalAckMarker.Begin(e.Pos, t)
 		player.SetPath(awakengine.Navigate(player.Pos(), e.Pos))
 	}
+	if len(player.Path()) == 0 {
+		goalAckMarker.End()
+	}
 }
 
 // Player returns the player unit.

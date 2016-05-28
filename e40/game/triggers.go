@@ -19,13 +19,11 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-var (
-	avatarsAnim = &awakengine.Anim{
-		Key:       "inv_avatars",
-		Frames:    5,
-		FrameSize: vec.I2{34, 64},
-	}
-)
+var avatarsSheet = &awakengine.Sheet{
+	Key:       "inv_avatars",
+	Frames:    5,
+	FrameSize: vec.I2{34, 64},
+}
 
 const (
 	avatarNone     = iota - 1
@@ -45,16 +43,16 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 			Active: func(int) bool { return true },
 			Dialogues: []awakengine.DialogueLine{
 				//{avatarsAnim, avatarNone, "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890!@#$%%^&*();':\",./<>?"},
-				{avatarsAnim, avatarNone, "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)"},
-				{avatarsAnim, avatarAwakeman, `*sigh*`},
-				{avatarsAnim, avatarDucky, `Quack?`},
-				{avatarsAnim, avatarAwakeman, `It's not you, Ducky. I'm glad my ear isn't being talked off by Alamore, but at the expense of my phone being dead.`},
-				{avatarsAnim, avatarDucky, `Quaaaaack.`},
-				{avatarsAnim, avatarAwakeman, `It was my light source.`},
-				{avatarsAnim, avatarAwakeman, `. . .`},
-				{avatarsAnim, avatarAwakeman, `Hey, don't suppose you have a light?`},
-				{avatarsAnim, avatarDucky, `Quack quack.`},
-				{avatarsAnim, avatarNone, "(Click or tap on things to move & interact.)"},
+				{avatarsSheet, avatarNone, "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)"},
+				{avatarsSheet, avatarAwakeman, `*sigh*`},
+				{avatarsSheet, avatarDucky, `Quack?`},
+				{avatarsSheet, avatarAwakeman, `It's not you, Ducky. I'm glad my ear isn't being talked off by Alamore, but at the expense of my phone being dead.`},
+				{avatarsSheet, avatarDucky, `Quaaaaack.`},
+				{avatarsSheet, avatarAwakeman, `It was my light source.`},
+				{avatarsSheet, avatarAwakeman, `. . .`},
+				{avatarsSheet, avatarAwakeman, `Hey, don't suppose you have a light?`},
+				{avatarsSheet, avatarDucky, `Quack quack.`},
+				{avatarsSheet, avatarNone, "(Click or tap on things to move & interact.)"},
 			},
 		},
 	}

@@ -25,7 +25,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{30, 59},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  0,
@@ -36,7 +36,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{33, 61},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  1,
@@ -47,7 +47,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{9, 58},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  2,
@@ -58,7 +58,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{31, 60},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  3,
@@ -69,7 +69,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{31, 59},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  4,
@@ -80,7 +80,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{31, 56},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  5,
@@ -91,7 +91,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{32, 58},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  6,
@@ -102,7 +102,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{31, 59},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  7,
@@ -113,7 +113,7 @@ var baseDoodads = map[string]*awakengine.BaseDoodad{
 		A: &awakengine.Anim{
 			Key:       "trees",
 			Offset:    vec.I2{7, 59},
-			Frames:    9,
+			Frames:    make([]int, 9),
 			FrameSize: vec.I2{64, 64},
 		},
 		F:  8,

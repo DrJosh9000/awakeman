@@ -22,33 +22,34 @@ import (
 type AckMarker struct {
 	A *awakengine.Anim
 
-	birth, frame int
-	pos          vec.I2
-	visible      bool
+	frame, currentFrameTime int
+	pos                     vec.I2
+	visible                 bool
 }
 
 func (a *AckMarker) Begin(pos vec.I2, frame int) {
-	a.birth = frame
+	a.frame, a.currentFrameTime = -1, 0
 	a.pos = pos
 	a.visible = true
 }
+
+func (a *AckMarker) End() { a.visible = false }
 
 func (a *AckMarker) Anim() *awakengine.Anim { return a.A }
 func (a *AckMarker) Frame() int             { return a.frame }
 func (a *AckMarker) Pos() vec.I2            { return a.pos }
 
-func (a *AckMarker) Update(t int) {
+func (a *AckMarker) Update(int) {
 	if !a.visible {
 		return
 	}
-	if t < a.birth || t >= a.birth+a.A.Frames {
-		a.visible = false
-		return
+	a.frame++
+	if a.frame >= a.A.Frames {
+		a.frame = a.A.LoopTo
 	}
-	a.frame = t - a.birth
 }
 
 func (a *AckMarker) InWorld() bool { return true }
 func (a *AckMarker) Retire() bool  { return false }
 func (a *AckMarker) Visible() bool { return a.visible }
-func (a *AckMarker) Z() int        { return a.pos.Y }
+func (a *AckMarker) Z() int        { return -1 } // It's on the ground, which is -100
