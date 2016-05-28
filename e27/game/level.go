@@ -146,7 +146,7 @@ func (*Game) Level() (*awakengine.Level, error) {
 		TilesetKey:  "tiles",
 		TileSize:    32,
 		BlockHeight: 0,
-		//Obstacles:   precomputedObstacles,
-		//Paths:       precomputedPaths,
+		Obstacles:   precomputedObstacles,
+		Paths:       precomputedPaths,
 	}, nil
 }
