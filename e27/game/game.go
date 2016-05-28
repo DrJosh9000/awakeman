@@ -29,17 +29,6 @@ const (
 )
 
 var (
-	goalAckMarker = &awakengine.Transient{
-		A: &awakengine.Anim{
-			Key:       "mark",
-			Offset:    vec.I2{15, 15},
-			Frames:    4,
-			FrameSize: vec.I2{32, 32},
-			Mode:      awakengine.AnimOneShot,
-		},
-		Birth: -999,
-	}
-
 	theW = &awakengine.Doodad{
 		BaseDoodad: baseDoodads["W"],
 		P:          vec.I2{860, 453},
@@ -75,18 +64,25 @@ func (*Game) Font() awakengine.Font {
 	return common.MunroFont{}
 }
 
+func (*Game) Handle(t int, e awakengine.Event) {
+	if e.Type == awakengine.EventMouseUp {
+		goalAckMarker.Begin(e.Pos, t)
+		player.SetPath(awakengine.Navigate(player.Pos(), e.Pos))
+	}
+}
+
+// Objects provides all sprites in the level.
+func (*Game) Objects() []awakengine.Object {
+	return []awakengine.Object{
+		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
+		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
+		&awakengine.SpriteObject{Sprite: theW, Semiobject: theW},
+	}
+}
+
 // Player returns the player unit.
 func (*Game) Player() awakengine.Unit {
 	return player
-}
-
-// Sprites provides all sprites in the level.
-func (*Game) Sprites() []awakengine.Sprite {
-	return []awakengine.Sprite{
-		player,
-		goalAckMarker,
-		theW,
-	}
 }
 
 // Viewport is the size of the window and the pixels in the window.

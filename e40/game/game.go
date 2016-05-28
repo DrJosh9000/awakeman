@@ -62,8 +62,8 @@ func (*Game) Font() awakengine.Font {
 
 func (*Game) Handle(t int, e awakengine.Event) {
 	if e.Type == awakengine.EventMouseUp {
-		goalAckMarker.begin(e.Pos, t)
-		player.path = awakengine.Navigate(player.Pos(), e.Pos)
+		goalAckMarker.Begin(e.Pos, t)
+		player.SetPath(awakengine.Navigate(player.Pos(), e.Pos))
 	}
 }
 

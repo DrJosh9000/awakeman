@@ -22,7 +22,7 @@ import (
 
 var goalAckMarker = &common.AckMarker{
 	A: &awakengine.Anim{
-		Key:       "inv_mark",
+		Key:       "mark",
 		Offset:    vec.I2{15, 15},
 		Frames:    4,
 		FrameSize: vec.I2{32, 32},

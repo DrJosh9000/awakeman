@@ -15,141 +15,63 @@
 package game
 
 import (
+	"github.com/DrJosh9000/awakeman/common"
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
 )
 
-const playerSpeed = 1
-
-var (
-	playerAnims = map[PlayerState]*awakengine.Anim{
-		{playerWalking, vec.Left}: {
+var player = &common.Player{
+	P:  vec.F2{16*8 + 8, 16*4 + 8},
+	UL: vec.I2{-3, -5},
+	DR: vec.I2{4, 1},
+	Anims: map[common.PlayerState]*awakengine.Anim{
+		{common.PlayerActivityWalking, vec.Left}: {
 			Key:       "inv_walk_l",
 			Offset:    vec.I2{8, 31},
 			Frames:    7,
 			FrameSize: vec.I2{16, 32},
 		},
-		{playerWalking, vec.Right}: {
+		{common.PlayerActivityWalking, vec.Right}: {
 			Key:       "inv_walk_r",
 			Offset:    vec.I2{7, 31},
 			Frames:    7,
 			FrameSize: vec.I2{16, 32},
 		},
-		{playerWalking, vec.Up}: {
+		{common.PlayerActivityWalking, vec.Up}: {
 			Key:       "inv_walk_u",
 			Offset:    vec.I2{7, 27},
 			Frames:    14,
 			FrameSize: vec.I2{16, 33},
 		},
-		{playerWalking, vec.Down}: {
+		{common.PlayerActivityWalking, vec.Down}: {
 			Key:       "inv_walk_d",
 			Offset:    vec.I2{7, 27},
 			Frames:    14,
 			FrameSize: vec.I2{16, 33},
 		},
-		{playerIdle, vec.Left}: {
+		{common.PlayerActivityIdle, vec.Left}: {
 			Key:       "inv_idle_l",
 			Offset:    vec.I2{7, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
 		},
-		{playerIdle, vec.Up}: {
+		{common.PlayerActivityIdle, vec.Up}: {
 			Key:       "inv_idle_l",
 			Offset:    vec.I2{7, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
 		},
-		{playerIdle, vec.Right}: {
+		{common.PlayerActivityIdle, vec.Right}: {
 			Key:       "inv_idle_r",
 			Offset:    vec.I2{9, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
 		},
-		{playerIdle, vec.Down}: {
+		{common.PlayerActivityIdle, vec.Down}: {
 			Key:       "inv_idle_r",
 			Offset:    vec.I2{9, 31},
 			Frames:    1,
 			FrameSize: vec.I2{16, 32},
 		},
-	}
-
-	player = &Player{
-		pos: vec.F2{16*8 + 8, 16*4 + 8},
-	}
-	playerUL = vec.I2{-3, -5}
-	playerDR = vec.I2{4, 1}
-)
-
-// PlayerState describes the current simple state of the player: what are they doing,
-// and what direction are they facing.
-type PlayerState struct {
-	a PlayerActivity
-	d vec.Direction
-}
-
-// PlayerActivity describes what the player is doing.
-type PlayerActivity int
-
-const (
-	playerIdle = PlayerActivity(iota)
-	playerWalking
-)
-
-// Player encapsulates all the state of the player character.
-type Player struct {
-	pos   vec.F2
-	frame int
-	path  []vec.I2
-	state PlayerState
-}
-
-func (p *Player) InWorld() bool { return true }
-func (p *Player) Retire() bool  { return false }
-func (p *Player) Visible() bool { return true }
-func (p *Player) Z() int        { return p.Pos().Y }
-
-func (p *Player) Anim() *awakengine.Anim     { return playerAnims[p.state] }
-func (p *Player) Frame() int                 { return p.frame }
-func (p *Player) Pos() vec.I2                { return p.pos.I2() }
-func (p *Player) Footprint() (ul, dr vec.I2) { return playerUL, playerDR }
-
-func (p *Player) GoIdle() {
-	p.frame = 0
-	p.state.a = playerIdle
-	p.path = nil
-}
-
-func (p *Player) Path() []vec.I2 { return p.path }
-
-func (p *Player) Update(t int) {
-
-	if len(p.path) == 0 {
-		p.GoIdle()
-		return
-	}
-
-	// Take the next pixel step
-	d := p.path[0].F2().Sub(p.pos)
-	np := d.Norm()
-
-	// If at the current point, either aim at the next point, or stop.
-	if np < 1 {
-		if len(p.path) > 1 {
-			p.pos = p.path[0].F2() // Important to stop the player clipping through the wall...
-			p.path = p.path[1:]
-			d = p.path[0].F2().Sub(p.pos)
-			np = d.Norm()
-		} else {
-			p.pos = p.path[0].F2()
-			p.GoIdle()
-			return
-		}
-	}
-	p.state.a = playerWalking
-	p.state.d = d.Dir()
-	if t%animPeriod == 0 {
-		// Player walks straight there.
-		p.pos = p.pos.Add(d.Mul(playerSpeed / np))
-		p.frame++
-	}
+	},
 }
