@@ -14,34 +14,17 @@
 
 package game
 
-import (
-	"fmt"
-
-	"github.com/DrJosh9000/awakengine"
-)
+import "github.com/DrJosh9000/awakengine"
 
 func (*Game) Level() (*awakengine.Level, error) {
-	tm, sz, err := awakengine.ImageAsMap("level2tilemap")
+	bm, sz, err := awakengine.ImageAsMap("level2blockmap")
 	if err != nil {
 		return nil, err
 	}
-	bm, sz2, err := awakengine.ImageAsMap("level2blockmap")
-	if err != nil {
-		return nil, err
-	}
-	if sz != sz2 {
-		return nil, fmt.Errorf("map sizes not equal [%v != %v]", sz, sz2)
-	}
-
 	return &awakengine.Level{
 		Doodads:  nil,
 		MapSize:  sz,
-		TileMap:  tm,
 		BlockMap: bm,
-		TileInfos: []awakengine.TileInfo{
-			{Name: "black"},
-			{Name: "brick"},
-		},
 		BlockInfos: []awakengine.TileInfo{
 			{Name: "black"},
 			{Name: "prism", Blocking: true},
@@ -71,9 +54,10 @@ func (*Game) Level() (*awakengine.Level, error) {
 			{Name: "wall_vu", Blocking: true},
 			{Name: "wall_vd", Blocking: true},
 		},
-		TilesetKey:  "librarytiles",
 		BlocksetKey: "libraryblocks",
 		TileSize:    16,
 		BlockHeight: 32,
+		Obstacles:   precomputedObstacles,
+		Paths:       precomputedPaths,
 	}, nil
 }
