@@ -19,10 +19,7 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-const (
-	animPeriod  = 3
-	playerSpeed = 1
-)
+const playerSpeed = 1
 
 // PlayerState describes the current simple state of the player: what are they doing,
 // and what direction are they facing.
@@ -96,9 +93,8 @@ func (p *Player) Update(t int) {
 	}
 	p.state.A = PlayerActivityWalking
 	p.state.D = d.Dir()
-	if t%animPeriod == 0 {
-		// Player walks straight there.
-		p.P = p.P.Add(d.Mul(playerSpeed / np))
-		p.frame++
-	}
+
+	// Player walks straight there.
+	p.P = p.P.Add(d.Mul(playerSpeed / np))
+	p.frame++
 }

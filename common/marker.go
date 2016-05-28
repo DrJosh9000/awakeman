@@ -19,8 +19,6 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-const ackMarkerTimePerFrame = 6
-
 type AckMarker struct {
 	A *awakengine.Anim
 
@@ -43,11 +41,11 @@ func (a *AckMarker) Update(t int) {
 	if !a.visible {
 		return
 	}
-	if t < a.birth || t >= a.birth+a.A.Frames*ackMarkerTimePerFrame {
+	if t < a.birth || t >= a.birth+a.A.Frames {
 		a.visible = false
 		return
 	}
-	a.frame = (t - a.birth) / ackMarkerTimePerFrame
+	a.frame = t - a.birth
 }
 
 func (a *AckMarker) InWorld() bool { return true }

@@ -20,13 +20,7 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-const (
-	// One frame of animation for every (animationPeriod) frames rendered.
-	// So animation FPS = 60 / animationPeriod.
-	animPeriod = 3
-
-	windowTitle = "A walk in the park"
-)
+const windowTitle = "A walk in the park"
 
 // Game implements awakengine.Game
 type Game struct {
@@ -79,6 +73,6 @@ func (*Game) Player() awakengine.Unit {
 }
 
 // Viewport is the size of the window and the pixels in the window.
-func (g *Game) Viewport() (cs vec.I2, ps, ap int, title string) {
-	return g.camSize, g.pixelSize, animPeriod, windowTitle
+func (g *Game) Viewport() (cs vec.I2, ps int, title string) {
+	return g.camSize, g.pixelSize, windowTitle
 }

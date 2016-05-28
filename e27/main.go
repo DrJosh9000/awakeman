@@ -23,7 +23,9 @@ import (
 )
 
 var (
-	cfg          = &awakengine.Config{}
+	cfg = &awakengine.Config{
+		FramesPerUpdate: 3,
+	}
 	levelPreview = flag.Bool("levelpreview", false, "Draw a huge level, but have no triggers")
 )
 
