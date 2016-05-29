@@ -25,10 +25,8 @@ var theW = &struct {
 }{
 	StaticSprite: &awakengine.StaticSprite{
 		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{16, 27},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+			Sheet:  otherDoodadsSheet,
+			Offset: vec.I2{16, 27},
 		},
 		F: 1,
 		P: vec.I2{860, 453},

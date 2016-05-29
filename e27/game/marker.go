@@ -22,10 +22,12 @@ import (
 
 var goalAckMarker = &common.AckMarker{
 	A: &awakengine.Anim{
-		Key:       "mark",
-		Offset:    vec.I2{8, 8},
-		Frames:    []int{1, 1, 1, 1, 1, 1, 1},
-		FrameSize: vec.I2{16, 16},
-		LoopTo:    2,
+		Sheet: &awakengine.Sheet{
+			Key:       "mark",
+			Frames:    7,
+			FrameSize: vec.I2{16, 16},
+		},
+		Offset: vec.I2{8, 8},
+		LoopTo: 2,
 	},
 }
