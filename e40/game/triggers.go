@@ -15,6 +15,8 @@
 package game
 
 import (
+	"log"
+
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
 )
@@ -44,7 +46,12 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 			Dialogues: []awakengine.DialogueLine{
 				//{avatarsAnim, avatarNone, "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890!@#$%%^&*();':\",./<>?"},
 				{avatarsSheet, avatarNone, "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)", nil},
-				{avatarsSheet, avatarAwakeman, `*sigh*`, []string{"Demo", "Example"}},
+				{avatarsSheet, avatarAwakeman, `*sigh*`,
+					[]awakengine.ButtonSpec{
+						{"Demo", func() { log.Println("Demo button was clicked") }},
+						{"Example", func() { log.Println("Example button was clicked") }},
+					},
+				},
 				{avatarsSheet, avatarDucky, `Quack?`, nil},
 				{avatarsSheet, avatarAwakeman, `It's not you, Ducky. I'm glad my ear isn't being talked off by Alamore, but at the expense of my phone being dead.`, nil},
 				{avatarsSheet, avatarDucky, `Quaaaaack.`, nil},

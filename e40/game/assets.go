@@ -21,7 +21,7 @@ import (
 )
 
 func init() {
-	common.RegisterWoBAssets()
+	common.RegisterAssets()
 	awakengine.RegisterImage("level2blockmap", assets.Level2BlockMapPNG)
 	awakengine.RegisterImage("libraryblocks", assets.LibraryBlocksPNG)
 }
