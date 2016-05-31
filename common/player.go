@@ -50,6 +50,7 @@ type Player struct {
 
 func (p *Player) SetPath(path []vec.I2) { p.path = path }
 
+func (p *Player) Fixed() bool   { return false }
 func (p *Player) InWorld() bool { return true }
 func (p *Player) Retire() bool  { return false }
 func (p *Player) Visible() bool { return true }

@@ -15,13 +15,25 @@
 package game
 
 import (
-	"github.com/DrJosh9000/awakeman/common"
+	common "github.com/DrJosh9000/awakeman/common/assets"
 	"github.com/DrJosh9000/awakeman/e27/assets"
 	"github.com/DrJosh9000/awakengine"
 )
 
 func init() {
-	common.RegisterBoWAssets()
+	// Black-on-white assets.
+	awakengine.RegisterImage("avatars", common.AvatarsPNG)
+	awakengine.RegisterImage("bubble", common.BubblePNG)
+	awakengine.RegisterImage("idle_l", common.PlayerIdleLPNG)
+	awakengine.RegisterImage("idle_r", common.PlayerIdleRPNG)
+	awakengine.RegisterImage("mark", common.MarkPNG)
+	awakengine.RegisterImage("munro", common.MunroPNG)
+	awakengine.RegisterImage("walk_d", common.PlayerWalkDPNG)
+	awakengine.RegisterImage("walk_l", common.PlayerWalkLPNG)
+	awakengine.RegisterImage("walk_r", common.PlayerWalkRPNG)
+	awakengine.RegisterImage("walk_u", common.PlayerWalkUPNG)
+
+	// e27 assets.
 	awakengine.RegisterImage("doodads", assets.DoodadsPNG)
 	awakengine.RegisterImage("level1", assets.Level1PNG)
 	awakengine.RegisterImage("tiles", assets.TilesPNG)

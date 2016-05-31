@@ -44,16 +44,16 @@ func New(levelPreview bool) *Game {
 	}
 }
 
-func (*Game) BubbleKey() string { return "bubble" }
+func (*Game) BubbleKey() (string, string) { return "bubble", "inv_bubble" }
 
 // Font returns the default typeface.
 func (*Game) Font() awakengine.Font {
 	return common.MunroFont{}
 }
 
-func (*Game) Handle(t int, e awakengine.Event) {
+func (*Game) Handle(e awakengine.Event) {
 	if e.Type == awakengine.EventMouseUp {
-		goalAckMarker.Begin(e.Pos, t)
+		goalAckMarker.Begin(e.Pos, e.Time)
 		player.SetPath(awakengine.Navigate(player.Pos(), e.Pos))
 	}
 	if len(player.Path()) == 0 {
