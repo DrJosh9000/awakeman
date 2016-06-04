@@ -24,14 +24,17 @@ var player = &common.Player{
 	P:  vec.F2{16*8 + 8, 16*4 + 8},
 	UL: vec.I2{-3, -5},
 	DR: vec.I2{4, 1},
-	Anims: map[common.PlayerState]*awakengine.Anim{
+	Anims: map[common.PlayerState]*common.Anim{
 		{common.PlayerActivityWalking, vec.Left}: {
 			Sheet: &awakengine.Sheet{
 				Key:       "inv_walk_l",
 				Frames:    7,
 				FrameSize: vec.I2{16, 32},
 			},
-			Offset: vec.I2{8, 31},
+			StaticOffset: awakengine.StaticOffset{8, 31},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1},
+			},
 		},
 		{common.PlayerActivityWalking, vec.Right}: {
 			Sheet: &awakengine.Sheet{
@@ -39,7 +42,10 @@ var player = &common.Player{
 				Frames:    7,
 				FrameSize: vec.I2{16, 32},
 			},
-			Offset: vec.I2{7, 31},
+			StaticOffset: awakengine.StaticOffset{7, 31},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1},
+			},
 		},
 		{common.PlayerActivityWalking, vec.Up}: {
 			Sheet: &awakengine.Sheet{
@@ -47,7 +53,10 @@ var player = &common.Player{
 				Frames:    14,
 				FrameSize: vec.I2{16, 33},
 			},
-			Offset: vec.I2{7, 27},
+			StaticOffset: awakengine.StaticOffset{7, 27},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			},
 		},
 		{common.PlayerActivityWalking, vec.Down}: {
 			Sheet: &awakengine.Sheet{
@@ -55,39 +64,54 @@ var player = &common.Player{
 				Frames:    14,
 				FrameSize: vec.I2{16, 33},
 			},
-			Offset: vec.I2{7, 27},
+			StaticOffset: awakengine.StaticOffset{7, 27},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			},
 		},
 		{common.PlayerActivityIdle, vec.Left}: {
 			Sheet: &awakengine.Sheet{
 				Key:       "inv_idle_l",
-				Frames:    1,
+				Frames:    2,
 				FrameSize: vec.I2{16, 32},
 			},
-			Offset: vec.I2{7, 31},
+			StaticOffset: awakengine.StaticOffset{7, 31},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{100, 20},
+			},
 		},
 		{common.PlayerActivityIdle, vec.Up}: {
 			Sheet: &awakengine.Sheet{
 				Key:       "inv_idle_l",
-				Frames:    1,
+				Frames:    2,
 				FrameSize: vec.I2{16, 32},
 			},
-			Offset: vec.I2{7, 31},
+			StaticOffset: awakengine.StaticOffset{7, 31},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{100, 20},
+			},
 		},
 		{common.PlayerActivityIdle, vec.Right}: {
 			Sheet: &awakengine.Sheet{
 				Key:       "inv_idle_r",
-				Frames:    1,
+				Frames:    2,
 				FrameSize: vec.I2{16, 32},
 			},
-			Offset: vec.I2{9, 31},
+			StaticOffset: awakengine.StaticOffset{9, 31},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{100, 20},
+			},
 		},
 		{common.PlayerActivityIdle, vec.Down}: {
 			Sheet: &awakengine.Sheet{
 				Key:       "inv_idle_r",
-				Frames:    1,
+				Frames:    2,
 				FrameSize: vec.I2{16, 32},
 			},
-			Offset: vec.I2{9, 31},
+			StaticOffset: awakengine.StaticOffset{9, 31},
+			Playback: &awakengine.Playback{
+				FrameDuration: []int{100, 20},
+			},
 		},
 	},
 }

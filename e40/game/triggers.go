@@ -15,8 +15,6 @@
 package game
 
 import (
-	"log"
-
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
 )
@@ -42,24 +40,33 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 	}
 	return map[string]*awakengine.Trigger{
 		"startGame": {
-			Active: func(int) bool { return true },
 			Dialogues: []awakengine.DialogueLine{
-				//{avatarsAnim, avatarNone, "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 1234567890!@#$%%^&*();':\",./<>?"},
-				{avatarsSheet, avatarNone, "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)", nil},
-				{avatarsSheet, avatarAwakeman, `*sigh*`,
-					[]awakengine.ButtonSpec{
-						{"Demo", func() { log.Println("Demo button was clicked") }},
-						{"Example", func() { log.Println("Example button was clicked") }},
-					},
-				},
-				{avatarsSheet, avatarDucky, `Quack?`, nil},
-				{avatarsSheet, avatarAwakeman, `It's not you, Ducky. I'm glad my ear isn't being talked off by Alamore, but at the expense of my phone being dead.`, nil},
-				{avatarsSheet, avatarDucky, `Quaaaaack.`, nil},
-				{avatarsSheet, avatarAwakeman, `It was my light source.`, nil},
-				{avatarsSheet, avatarAwakeman, `. . .`, nil},
-				{avatarsSheet, avatarAwakeman, `Hey, don't suppose you have a light?`, nil},
-				{avatarsSheet, avatarDucky, `Quack quack.`, nil},
-				{avatarsSheet, avatarNone, "(Click or tap on things to move & interact.)", nil},
+				{Avatars: avatarsSheet, Index: avatarNone, Text: "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)", Slowness: -1},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `*sigh*`, Slowness: 4},
+				{Avatars: avatarsSheet, Index: avatarDucky, Text: `Quack?`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `It's not you, Ducky. I'm glad my ear isn't being talked off by Alamore, but at the expense of my phone being dead.`},
+				{Avatars: avatarsSheet, Index: avatarDucky, Text: `Quaaaaack.`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `It was my light source.`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `. . .`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `Hey, don't suppose you have a light?`},
+				{Avatars: avatarsSheet, Index: avatarDucky, Text: `Quack quack.`},
+				{Avatars: avatarsSheet, Index: avatarNone, Text: "(Click or tap on things to move & interact.)"},
+			},
+		},
+
+		"it's dark in here": {
+			Depends: []string{"startGame"},
+			Dialogues: []awakengine.DialogueLine{
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `My sight seems to have adjusted to the dark.`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `. . .`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `Ducky, why are you here?`},
+				{Avatars: avatarsSheet, Index: avatarDucky, Text: `Quack!`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `Ask a silly question, get a silly answer.`},
+				{Avatars: avatarsSheet, Index: avatarDucky, Text: `*bzzzt*`},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `What?`},
+				{Avatars: avatarsSheet, Index: avatarSJ, Text: `Hello! Hello? Can you hear m--`, AutoNext: true},
+				{Avatars: avatarsSheet, Index: avatarAwakeman, Text: `Yeah, I can hear you. Science Jesus? You're talking to me through the duck?`},
+				{Avatars: avatarsSheet, Index: avatarSJ, Text: "Ask a silly question, get a silly answer.\nYes I'm talking through the duck!"},
 			},
 		},
 	}

@@ -20,33 +20,27 @@ import (
 )
 
 type AckMarker struct {
-	A *awakengine.Anim
-
-	frame, currentFrameTime int
-	pos                     vec.I2
-	visible                 bool
+	*awakengine.Sheet
+	*awakengine.Playback
+	awakengine.StaticOffset
+	pos     vec.I2
+	visible bool
 }
 
 func (a *AckMarker) Begin(pos vec.I2, frame int) {
-	a.frame, a.currentFrameTime = -1, 0
+	a.Playback.Reset()
 	a.pos = pos
 	a.visible = true
 }
 
-func (a *AckMarker) End() { a.visible = false }
-
-func (a *AckMarker) Anim() *awakengine.Anim { return a.A }
-func (a *AckMarker) Frame() int             { return a.frame }
-func (a *AckMarker) Pos() vec.I2            { return a.pos }
+func (a *AckMarker) End()        { a.visible = false }
+func (a *AckMarker) Pos() vec.I2 { return a.pos }
 
 func (a *AckMarker) Update(int) {
 	if !a.visible {
 		return
 	}
-	a.frame++
-	if a.frame >= a.A.Frames {
-		a.frame = a.A.LoopTo
-	}
+	a.Playback.Update(0)
 }
 
 func (a *AckMarker) Fixed() bool   { return false }

@@ -36,15 +36,22 @@ const (
 	PlayerActivityWalking
 )
 
+type Anim struct {
+	*awakengine.Sheet
+	awakengine.StaticOffset
+	*awakengine.Playback
+}
+
 // Player encapsulates all the state of the player character.
 type Player struct {
-	P     vec.F2
-	Anims map[PlayerState]*awakengine.Anim
-	UL    vec.I2
-	DR    vec.I2
+	// Templatey stuff
+	Anims  map[PlayerState]*Anim
+	UL, DR vec.I2
 
+	// Instancey stuff
+	*Anim
+	P     vec.F2
 	path  []vec.I2
-	frame int
 	state PlayerState
 }
 
@@ -56,14 +63,13 @@ func (p *Player) Retire() bool  { return false }
 func (p *Player) Visible() bool { return true }
 func (p *Player) Z() int        { return p.Pos().Y }
 
-func (p *Player) Anim() *awakengine.Anim     { return p.Anims[p.state] }
-func (p *Player) Frame() int                 { return p.frame }
 func (p *Player) Pos() vec.I2                { return p.P.I2() }
 func (p *Player) Footprint() (ul, dr vec.I2) { return p.UL, p.DR }
 
 func (p *Player) GoIdle() {
-	p.frame = 0
 	p.state.A = PlayerActivityIdle
+	p.Anim = p.Anims[p.state]
+	p.Anim.Playback.Reset()
 	p.path = nil
 }
 
@@ -71,7 +77,10 @@ func (p *Player) Path() []vec.I2 { return p.path }
 
 func (p *Player) Update(t int) {
 	if len(p.path) == 0 {
-		p.GoIdle()
+		if p.state.A != PlayerActivityIdle {
+			p.GoIdle()
+		}
+		p.Anim.Update(t)
 		return
 	}
 
@@ -94,8 +103,9 @@ func (p *Player) Update(t int) {
 	}
 	p.state.A = PlayerActivityWalking
 	p.state.D = d.Dir()
+	p.Anim = p.Anims[p.state]
 
 	// Player walks straight there.
 	p.P = p.P.Add(d.Mul(playerSpeed / np))
-	p.frame++
+	p.Anim.Update(t)
 }

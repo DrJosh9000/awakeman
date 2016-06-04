@@ -24,12 +24,10 @@ var theW = &struct {
 	*awakengine.StaticSemiobject
 }{
 	StaticSprite: &awakengine.StaticSprite{
-		A: &awakengine.Anim{
-			Sheet:  otherDoodadsSheet,
-			Offset: vec.I2{16, 27},
-		},
-		F: 1,
-		P: vec.I2{860, 453},
+		Sheet:          otherDoodadsSheet,
+		StaticOffset:   awakengine.StaticOffset{16, 27},
+		StaticPlayback: awakengine.StaticPlayback(1),
+		P:              vec.I2{860, 453},
 	},
 	StaticSemiobject: &awakengine.StaticSemiobject{
 		IW:  true,

@@ -21,13 +21,14 @@ import (
 )
 
 var goalAckMarker = &common.AckMarker{
-	A: &awakengine.Anim{
-		Sheet: &awakengine.Sheet{
-			Key:       "inv_mark",
-			Frames:    7,
-			FrameSize: vec.I2{16, 16},
-		},
-		Offset: vec.I2{8, 8},
-		LoopTo: 2,
+	Sheet: &awakengine.Sheet{
+		Key:       "inv_mark",
+		Frames:    7,
+		FrameSize: vec.I2{16, 16},
+	},
+	StaticOffset: awakengine.StaticOffset{8, 8},
+	Playback: &awakengine.Playback{
+		FrameDuration: []int{1, 1, 1, 1, 1, 1, 1},
+		LoopTo:        2,
 	},
 }
