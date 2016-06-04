@@ -40,4 +40,5 @@ func init() {
 	// e40 assets.
 	awakengine.RegisterImage("level2blockmap", assets.Level2BlockMapPNG)
 	awakengine.RegisterImage("libraryblocks", assets.LibraryBlocksPNG)
+	awakengine.RegisterImage("items", assets.ItemsPNG)
 }

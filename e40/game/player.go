@@ -20,11 +20,8 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-var player = &common.Player{
-	P:  vec.F2{16*8 + 8, 16*4 + 8},
-	UL: vec.I2{-3, -5},
-	DR: vec.I2{4, 1},
-	Anims: map[common.PlayerState]*common.Anim{
+var (
+	playerAnims = map[common.PlayerState]*common.Anim{
 		{common.PlayerActivityWalking, vec.Left}: {
 			Sheet: &awakengine.Sheet{
 				Key:       "inv_walk_l",
@@ -113,5 +110,13 @@ var player = &common.Player{
 				FrameDuration: []int{100, 20},
 			},
 		},
-	},
-}
+	}
+
+	player = &common.Player{
+		P:     vec.F2{16*8 + 8, 16*4 + 8},
+		UL:    vec.I2{-3, -5},
+		DR:    vec.I2{4, 1},
+		Anims: playerAnims,
+		Anim:  playerAnims[common.PlayerState{common.PlayerActivityIdle, vec.Right}],
+	}
+)
