@@ -30,4 +30,12 @@ var (
 	itemKey   = &awakengine.SheetFrame{itemsSheet, 1}
 	itemBook  = &awakengine.SheetFrame{itemsSheet, 2}
 	itemDucky = &awakengine.SheetFrame{itemsSheet, 3}
+
+	inventory = &Inventory{
+		items: []*awakengine.SheetFrame{itemPhone, itemDucky},
+	}
 )
+
+type Inventory struct {
+	items []*awakengine.SheetFrame
+}

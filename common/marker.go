@@ -23,6 +23,7 @@ type AckMarker struct {
 	*awakengine.Sheet
 	*awakengine.Playback
 	awakengine.StaticOffset
+	awakengine.ChildOf
 	pos     vec.I2
 	visible bool
 }
@@ -44,7 +45,6 @@ func (a *AckMarker) Update(int) {
 }
 
 func (a *AckMarker) Fixed() bool   { return false }
-func (a *AckMarker) InWorld() bool { return true }
 func (a *AckMarker) Retire() bool  { return false }
 func (a *AckMarker) Visible() bool { return a.visible }
 func (a *AckMarker) Z() int        { return -1 } // It's on the ground, which is -100

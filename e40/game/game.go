@@ -25,8 +25,8 @@ const windowTitle = "Awakeman! #40: Escape from the Dark Library"
 // Game implements awakengine.Game
 type Game struct {
 	pixelSize    int
-	camSize      vec.I2
 	levelPreview bool
+	scene        *awakengine.Scene
 }
 
 // New creates a new Game.
@@ -38,10 +38,40 @@ func New(levelPreview bool) *Game {
 		cs = vec.I2{1024, 512}
 		//cs = vec.I2{512, 256}
 	}
+	scene := &awakengine.Scene{
+		CameraSize: cs,
+	}
+	/*for _, d := range l.Doodads {
+		scene.AddObject(d)
+	}*/
+	scene.AddObject(
+		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
+		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
+	)
+	hud := &awakengine.HUDRegion{
+		Bubble: &awakengine.Bubble{
+			UL:  vec.I2{2, 2},
+			DR:  vec.I2{61, 37},
+			Key: "inv_bubble",
+		},
+		Items: []awakengine.Drawable{
+			&awakengine.Billboard{
+				SheetFrame: itemPhone,
+				P:          vec.I2{8, 8},
+			},
+			&awakengine.Billboard{
+				SheetFrame: itemDucky,
+				P:          vec.I2{8 + 24, 8},
+			},
+		},
+		V: true,
+		R: false,
+	}
+	hud.AddToScene(scene)
 	return &Game{
 		pixelSize:    ps,
-		camSize:      cs,
 		levelPreview: levelPreview,
+		scene:        scene,
 	}
 }
 
@@ -69,15 +99,9 @@ func (*Game) Player() awakengine.Unit {
 	return player
 }
 
-// Objects provides all sprites in the level.
-func (*Game) Objects() []awakengine.Object {
-	return []awakengine.Object{
-		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
-		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
-	}
-}
+func (g *Game) Scene() *awakengine.Scene { return g.scene }
 
 // Viewport is the size of the window and the pixels in the window.
-func (g *Game) Viewport() (cs vec.I2, ps int, title string) {
-	return g.camSize, g.pixelSize, windowTitle
+func (g *Game) Viewport() (pixSize int, title string) {
+	return g.pixelSize, windowTitle
 }
