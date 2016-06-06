@@ -39,3 +39,14 @@ var (
 type Inventory struct {
 	items []*awakengine.SheetFrame
 }
+
+func (in *Inventory) ItemSize() vec.I2 { return itemsSheet.FrameSize }
+func (in *Inventory) Columns() int     { return 1 }
+func (in *Inventory) NumItems() int    { return len(in.items) }
+
+func (in *Inventory) Item(i int, par awakengine.ChildOf) awakengine.Object {
+	return &struct {
+		*awakengine.SheetFrame
+		awakengine.ChildOf
+	}{in.items[i], par}
+}

@@ -34,12 +34,16 @@ var (
 )
 
 func (g *Game) Triggers() map[string]*awakengine.Trigger {
-	if g.levelPreview {
+	if g.levelPreview || g.noTriggers {
 		return nil
 	}
 	return map[string]*awakengine.Trigger{
 		"startGame": {
 			Dialogues: []awakengine.DialogueLine{
+				/*{Avatar: avatarAwakeman, Text: "Yes hello this is dog", Buttons: []awakengine.ButtonSpec{
+					{Label: "Yes", Action: func() { log.Printf("Yes") }},
+					{Label: "No", Action: func() { log.Printf("No") }},
+				}},*/
 				{Text: "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)", Slowness: -1},
 				{Avatar: avatarAwakeman, Text: `*sigh*`, Slowness: 4},
 				{Avatar: avatarDucky, Text: `Quack?`},

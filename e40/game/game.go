@@ -26,11 +26,12 @@ const windowTitle = "Awakeman! #40: Escape from the Dark Library"
 type Game struct {
 	pixelSize    int
 	levelPreview bool
+	noTriggers   bool
 	scene        *awakengine.Scene
 }
 
 // New creates a new Game.
-func New(levelPreview bool) *Game {
+func New(levelPreview, noTriggers bool) *Game {
 	ps := 3
 	cs := vec.I2{267, 150}
 	if levelPreview {
@@ -44,33 +45,33 @@ func New(levelPreview bool) *Game {
 	/*for _, d := range l.Doodads {
 		scene.AddObject(d)
 	}*/
+	player.ChildOf = awakengine.ChildOf{scene}
+	goalAckMarker.ChildOf = awakengine.ChildOf{scene}
 	scene.AddObject(
 		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
 		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
 	)
 	hud := &awakengine.HUDRegion{
 		Bubble: &awakengine.Bubble{
-			UL:  vec.I2{2, 2},
-			DR:  vec.I2{61, 37},
+			UL:  vec.I2{1, 7},
+			DR:  vec.I2{25, 56},
 			Key: "inv_bubble",
-		},
-		Items: []awakengine.Drawable{
-			&awakengine.Billboard{
-				SheetFrame: itemPhone,
-				P:          vec.I2{8, 8},
-			},
-			&awakengine.Billboard{
-				SheetFrame: itemDucky,
-				P:          vec.I2{8 + 24, 8},
-			},
 		},
 		V: true,
 		R: false,
 	}
 	hud.AddToScene(scene)
+
+	itemsGrid := &awakengine.Grid{
+		GridDelegate: inventory,
+		ChildOf:      awakengine.ChildOf{hud.Bubble},
+	}
+	itemsGrid.AddToScene(scene)
+
 	return &Game{
 		pixelSize:    ps,
 		levelPreview: levelPreview,
+		noTriggers:   noTriggers,
 		scene:        scene,
 	}
 }
@@ -84,14 +85,15 @@ func (*Game) Font() awakengine.Font {
 	}
 }
 
-func (*Game) Handle(e awakengine.Event) {
+func (g *Game) Handle(e awakengine.Event) {
 	if e.Type == awakengine.EventMouseUp {
-		goalAckMarker.Begin(e.Pos, e.Time)
-		player.SetPath(awakengine.Navigate(player.Pos(), e.Pos))
+		goalAckMarker.Begin(e.ScenePos, e.Time)
+		player.SetPath(awakengine.Navigate(player.Pos(), e.ScenePos))
 	}
 	if len(player.Path()) == 0 {
 		goalAckMarker.End()
 	}
+	g.scene.CameraFocus(player.Pos())
 }
 
 // Player returns the player unit.

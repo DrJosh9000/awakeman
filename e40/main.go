@@ -26,7 +26,8 @@ var (
 	cfg = &awakengine.Config{
 		FramesPerUpdate: 3,
 	}
-	levelPreview = flag.Bool("levelpreview", false, "Draw a huge level, but have no triggers")
+	levelPreview = flag.Bool("levelpreview", false, "Draw a huge level, and have no triggers")
+	noTriggers   = flag.Bool("notrigs", false, "Disable triggers and dialogue")
 )
 
 func init() {
@@ -38,7 +39,7 @@ func init() {
 
 func main() {
 	flag.Parse()
-	g := game.New(*levelPreview)
+	g := game.New(*levelPreview, *noTriggers)
 	if err := awakengine.Run(g, cfg); err != nil {
 		log.Fatalf("Cannot run game: %v", err)
 	}
