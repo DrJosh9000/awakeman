@@ -49,7 +49,7 @@ type Player struct {
 	UL, DR vec.I2
 
 	// Instancey stuff
-	awakengine.ChildOf
+	*awakengine.View // container
 	*Anim
 	P     vec.F2
 	path  []vec.I2

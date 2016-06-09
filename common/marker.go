@@ -23,7 +23,8 @@ type AckMarker struct {
 	*awakengine.Sheet
 	*awakengine.Playback
 	awakengine.StaticOffset
-	awakengine.ChildOf
+	*awakengine.View // container
+
 	pos     vec.I2
 	visible bool
 }

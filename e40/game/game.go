@@ -34,19 +34,18 @@ type Game struct {
 func New(levelPreview, noTriggers bool) *Game {
 	ps := 3
 	cs := vec.I2{267, 150}
+	ts := vec.I2{1024, 512}
 	if levelPreview {
 		ps = 2
-		cs = vec.I2{1024, 512}
+		cs = ts
 		//cs = vec.I2{512, 256}
 	}
-	scene := &awakengine.Scene{
-		CameraSize: cs,
-	}
+	scene := awakengine.NewScene(cs, ts)
 	/*for _, d := range l.Doodads {
 		scene.AddObject(d)
 	}*/
-	player.ChildOf = awakengine.ChildOf{scene}
-	goalAckMarker.ChildOf = awakengine.ChildOf{scene}
+	player.View.SetParent(scene.World)
+	goalAckMarker.View.SetParent(scene.World)
 	scene.AddObject(
 		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
 		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
