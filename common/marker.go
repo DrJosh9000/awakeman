@@ -14,38 +14,13 @@
 
 package common
 
-import (
-	"github.com/DrJosh9000/awakengine"
-	"github.com/DrJosh9000/vec"
-)
+import "github.com/DrJosh9000/awakengine"
 
 type AckMarker struct {
 	*awakengine.Sheet
-	*awakengine.Playback
-	awakengine.StaticOffset
-	*awakengine.View // container
-
-	pos     vec.I2
-	visible bool
 }
 
-func (a *AckMarker) Begin(pos vec.I2, frame int) {
-	a.Playback.Reset()
-	a.pos = pos
-	a.visible = true
-}
-
-func (a *AckMarker) End()        { a.visible = false }
-func (a *AckMarker) Pos() vec.I2 { return a.pos }
-
-func (a *AckMarker) Update(int) {
-	if !a.visible {
-		return
-	}
-	a.Playback.Update(0)
-}
-
-func (a *AckMarker) Fixed() bool   { return false }
-func (a *AckMarker) Retire() bool  { return false }
-func (a *AckMarker) Visible() bool { return a.visible }
-func (a *AckMarker) Z() int        { return -1 } // It's on the ground, which is -100
+func (a *AckMarker) Fixed(*awakengine.Sprite) bool                    { return false }
+func (a *AckMarker) SpriteSheet(*awakengine.Sprite) *awakengine.Sheet { return a.Sheet }
+func (a *AckMarker) Update(*awakengine.Sprite, int)                   {}
+func (a *AckMarker) Z(*awakengine.Sprite) int                         { return -1 } // It's on the ground, which is -100, but below blocks, starting at 0.

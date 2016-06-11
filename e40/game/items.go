@@ -21,9 +21,9 @@ import (
 
 var (
 	itemsSheet = &awakengine.Sheet{
-		Key:       "items",
-		Frames:    4,
-		FrameSize: vec.I2{24, 24},
+		Key:        "items",
+		FrameSize:  vec.I2{24, 24},
+		FrameInfos: awakengine.BasicFrameInfos(4, -1, vec.I2{0, 0}),
 	}
 
 	itemPhone = &awakengine.SheetFrame{itemsSheet, 0}
@@ -44,9 +44,9 @@ func (in *Inventory) ItemSize() vec.I2 { return itemsSheet.FrameSize }
 func (in *Inventory) Columns() int     { return 1 }
 func (in *Inventory) NumItems() int    { return len(in.items) }
 
-func (in *Inventory) Item(i int, par awakengine.ChildOf) awakengine.Object {
-	return &struct {
-		*awakengine.SheetFrame
-		awakengine.ChildOf
-	}{in.items[i], par}
+func (in *Inventory) Item(i int, par *awakengine.View) *awakengine.Sprite {
+	return &awakengine.Sprite{
+		View: par,
+	}
+	//	in.items[i]
 }

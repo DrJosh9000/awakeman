@@ -21,102 +21,59 @@ import (
 )
 
 var (
-	playerAnims = map[common.PlayerState]*common.Anim{
-		{common.PlayerActivityWalking, vec.Left}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_walk_l",
-				Frames:    7,
-				FrameSize: vec.I2{16, 32},
-			},
-			StaticOffset: awakengine.StaticOffset{8, 31},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1},
-			},
+	invIdleLeft = &awakengine.Sheet{
+		Key: "inv_idle_l",
+		FrameInfos: []awakengine.FrameInfo{
+			{Next: 1, Duration: 100, Offset: vec.I2{7, 31}},
+			{Next: 0, Duration: 20, Offset: vec.I2{7, 31}},
 		},
-		{common.PlayerActivityWalking, vec.Right}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_walk_r",
-				Frames:    7,
-				FrameSize: vec.I2{16, 32},
-			},
-			StaticOffset: awakengine.StaticOffset{7, 31},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1},
-			},
+		FrameSize: vec.I2{16, 32},
+	}
+	invIdleRight = &awakengine.Sheet{
+		Key: "inv_idle_r",
+		FrameInfos: []awakengine.FrameInfo{
+			{Next: 1, Duration: 100, Offset: vec.I2{9, 31}},
+			{Next: 0, Duration: 20, Offset: vec.I2{9, 31}},
 		},
-		{common.PlayerActivityWalking, vec.Up}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_walk_u",
-				Frames:    14,
-				FrameSize: vec.I2{16, 33},
-			},
-			StaticOffset: awakengine.StaticOffset{7, 27},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-			},
-		},
-		{common.PlayerActivityWalking, vec.Down}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_walk_d",
-				Frames:    14,
-				FrameSize: vec.I2{16, 33},
-			},
-			StaticOffset: awakengine.StaticOffset{7, 27},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-			},
-		},
-		{common.PlayerActivityIdle, vec.Left}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_idle_l",
-				Frames:    2,
-				FrameSize: vec.I2{16, 32},
-			},
-			StaticOffset: awakengine.StaticOffset{7, 31},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{100, 20},
-			},
-		},
-		{common.PlayerActivityIdle, vec.Up}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_idle_l",
-				Frames:    2,
-				FrameSize: vec.I2{16, 32},
-			},
-			StaticOffset: awakengine.StaticOffset{7, 31},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{100, 20},
-			},
-		},
-		{common.PlayerActivityIdle, vec.Right}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_idle_r",
-				Frames:    2,
-				FrameSize: vec.I2{16, 32},
-			},
-			StaticOffset: awakengine.StaticOffset{9, 31},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{100, 20},
-			},
-		},
-		{common.PlayerActivityIdle, vec.Down}: {
-			Sheet: &awakengine.Sheet{
-				Key:       "inv_idle_r",
-				Frames:    2,
-				FrameSize: vec.I2{16, 32},
-			},
-			StaticOffset: awakengine.StaticOffset{9, 31},
-			Playback: &awakengine.Playback{
-				FrameDuration: []int{100, 20},
-			},
-		},
+		FrameSize: vec.I2{16, 32},
 	}
 
-	player = &common.Player{
-		P:     vec.F2{16*8 + 8, 16*4 + 8},
+	playerAnims = map[common.PlayerState]*awakengine.Sheet{
+		{common.PlayerActivityWalking, vec.Left}: {
+			Key:        "inv_walk_l",
+			FrameInfos: awakengine.BasicFrameInfos(7, 1, vec.I2{8, 31}),
+			FrameSize:  vec.I2{16, 32},
+		},
+		{common.PlayerActivityWalking, vec.Right}: {
+			Key:        "inv_walk_r",
+			FrameInfos: awakengine.BasicFrameInfos(7, 1, vec.I2{7, 31}),
+			FrameSize:  vec.I2{16, 32},
+		},
+		{common.PlayerActivityWalking, vec.Up}: {
+			Key:        "inv_walk_u",
+			FrameInfos: awakengine.BasicFrameInfos(14, 1, vec.I2{7, 27}),
+			FrameSize:  vec.I2{16, 33},
+		},
+		{common.PlayerActivityWalking, vec.Down}: {
+			Key:        "inv_walk_d",
+			FrameInfos: awakengine.BasicFrameInfos(14, 1, vec.I2{7, 27}),
+			FrameSize:  vec.I2{16, 33},
+		},
+		{common.PlayerActivityIdle, vec.Left}:  invIdleLeft,
+		{common.PlayerActivityIdle, vec.Up}:    invIdleLeft,
+		{common.PlayerActivityIdle, vec.Right}: invIdleRight,
+		{common.PlayerActivityIdle, vec.Down}:  invIdleRight,
+	}
+
+	playerDelegate = &common.Player{
 		UL:    vec.I2{-3, -5},
 		DR:    vec.I2{4, 1},
 		Anims: playerAnims,
-		Anim:  playerAnims[common.PlayerState{common.PlayerActivityIdle, vec.Right}],
+		//State:  common.PlayerState{common.PlayerActivityIdle, vec.Right},
+	}
+
+	player = &awakengine.Sprite{
+		Pos:            vec.F2{16*8 + 8, 16*4 + 8},
+		SpriteDelegate: playerDelegate,
 	}
 )

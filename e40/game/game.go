@@ -15,6 +15,8 @@
 package game
 
 import (
+	"log"
+
 	"github.com/DrJosh9000/awakeman/common"
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
@@ -44,28 +46,28 @@ func New(levelPreview, noTriggers bool) *Game {
 	/*for _, d := range l.Doodads {
 		scene.AddObject(d)
 	}*/
-	player.View.SetParent(scene.World)
+	player.View = scene.World
+	scene.CameraFocus(player.Pos.I2())
 	goalAckMarker.View.SetParent(scene.World)
-	scene.AddObject(
-		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
-		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
-	)
-	hud := &awakengine.HUDRegion{
-		Bubble: &awakengine.Bubble{
-			UL:  vec.I2{1, 7},
-			DR:  vec.I2{25, 56},
-			Key: "inv_bubble",
-		},
-		V: true,
-		R: false,
-	}
-	hud.AddToScene(scene)
+	scene.AddPart(player, goalAckMarker)
+	/*
+		hud := &awakengine.HUDRegion{
+			Bubble: &awakengine.Bubble{
+				Key: "inv_bubble",
+				UL:  vec.I2{1, 7},
+				DR:  vec.I2{25, 56},
+			},
+			V: true,
+			R: false,
+		}
+		hud.AddToScene(scene)
 
-	itemsGrid := &awakengine.Grid{
-		GridDelegate: inventory,
-		ChildOf:      awakengine.ChildOf{hud.Bubble},
-	}
-	itemsGrid.AddToScene(scene)
+		itemsGrid := &awakengine.Grid{
+			GridDelegate: inventory,
+			ChildOf:      awakengine.ChildOf{hud.Bubble},
+		}
+		itemsGrid.AddToScene(scene)
+	*/
 
 	return &Game{
 		pixelSize:    ps,
@@ -86,18 +88,23 @@ func (*Game) Font() awakengine.Font {
 
 func (g *Game) Handle(e awakengine.Event) {
 	if e.Type == awakengine.EventMouseUp {
-		goalAckMarker.Begin(e.ScenePos, e.Time)
-		player.SetPath(awakengine.Navigate(player.Pos(), e.ScenePos))
+		//goalAckMarker.Begin(e.ScenePos, e.Time)
+		log.Printf("e.WorldPos: %v", e.WorldPos)
+		goalAckMarker.ResetAnim()
+		goalAckMarker.Pos = e.WorldPos.F2()
+		goalAckMarker.SetVisible(true)
+		playerDelegate.SetPath(awakengine.Navigate(player.Pos.I2(), e.WorldPos))
 	}
-	if len(player.Path()) == 0 {
-		goalAckMarker.End()
+	if len(playerDelegate.Path()) == 0 {
+		goalAckMarker.SetVisible(false)
+		// log.Printf("goalAckMarker sheet: %#v", goalAckMarker.SpriteDelegate.SpriteSheet(goalAckMarker))
 	}
-	g.scene.CameraFocus(player.Pos())
+	g.scene.CameraFocus(player.Pos.I2())
 }
 
 // Player returns the player unit.
 func (*Game) Player() awakengine.Unit {
-	return player
+	return playerDelegate
 }
 
 func (g *Game) Scene() *awakengine.Scene { return g.scene }

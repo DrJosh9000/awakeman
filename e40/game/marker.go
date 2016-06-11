@@ -20,15 +20,24 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-var goalAckMarker = &common.AckMarker{
-	Sheet: &awakengine.Sheet{
-		Key:       "inv_mark",
-		Frames:    7,
-		FrameSize: vec.I2{16, 16},
-	},
-	StaticOffset: awakengine.StaticOffset{8, 8},
-	Playback: &awakengine.Playback{
-		FrameDuration: []int{1, 1, 1, 1, 1, 1, 1},
-		LoopTo:        2,
-	},
-}
+var (
+	goalAckMarker = &awakengine.Sprite{
+		View: &awakengine.View{},
+		SpriteDelegate: &common.AckMarker{
+			Sheet: &awakengine.Sheet{
+				Key:       "inv_mark",
+				FrameSize: vec.I2{16, 16},
+				FrameInfos: []awakengine.FrameInfo{
+					// Start at 0, loop to 2.
+					{Next: 1, Offset: vec.I2{8, 8}},
+					{Next: 2, Offset: vec.I2{8, 8}},
+					{Next: 3, Offset: vec.I2{8, 8}},
+					{Next: 4, Offset: vec.I2{8, 8}},
+					{Next: 5, Offset: vec.I2{8, 8}},
+					{Next: 6, Offset: vec.I2{8, 8}},
+					{Next: 2, Offset: vec.I2{8, 8}},
+				},
+			},
+		},
+	}
+)

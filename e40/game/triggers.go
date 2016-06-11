@@ -21,9 +21,9 @@ import (
 
 var (
 	avatarsSheet = &awakengine.Sheet{
-		Key:       "inv_avatars",
-		Frames:    5,
-		FrameSize: vec.I2{34, 64},
+		Key:        "inv_avatars",
+		FrameInfos: awakengine.BasicFrameInfos(5, -1, vec.I2{0, 0}),
+		FrameSize:  vec.I2{34, 64},
 	}
 
 	avatarAwakeman        = &awakengine.SheetFrame{avatarsSheet, 0}
@@ -88,14 +88,14 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 		},
 
 		"before the centre": {
-			Active: func(int) bool { return player.Pos().InRect(vec.I2{X: 675, Y: 396}, vec.I2{X: 691, Y: 405}) },
+			Active: func(int) bool { return player.Pos.I2().InRect(vec.I2{X: 675, Y: 396}, vec.I2{X: 691, Y: 405}) },
 			Dialogues: []awakengine.DialogueLine{
 				{Avatar: avatarAwakeman, Text: `How long is this going to go on for?`},
 			},
 		},
 
 		"spiral centre": {
-			Active: func(int) bool { return player.Pos().InRect(vec.I2{745, 325}, vec.I2{775, 351}) },
+			Active: func(int) bool { return player.Pos.I2().InRect(vec.I2{745, 325}, vec.I2{775, 351}) },
 			Dialogues: []awakengine.DialogueLine{
 				{Avatar: avatarAwakeman, Text: `What is the point of this spiral?`},
 				{Avatar: avatarAwakeman, Text: `This has got to be the most terrible architecture it has ever been my misfortune to walk through.`},
@@ -117,7 +117,7 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 		},
 
 		"past the centre": {
-			Active: func(int) bool { return player.Pos().InRect(vec.I2{712, 261}, vec.I2{725, 271}) },
+			Active: func(int) bool { return player.Pos.I2().InRect(vec.I2{712, 261}, vec.I2{725, 271}) },
 			Dialogues: []awakengine.DialogueLine{
 				{Avatar: avatarAwakeman, Text: "If I'm not in the office, where am I?"},
 				{Avatar: avatarAwakeman, Text: `. . .`, Slowness: 8},
@@ -126,7 +126,7 @@ func (g *Game) Triggers() map[string]*awakengine.Trigger {
 		},
 
 		"past the centre 2": {
-			Active: func(int) bool { return player.Pos().InRect(vec.I2{X: 915, Y: 315}, vec.I2{X: 924, Y: 323}) },
+			Active: func(int) bool { return player.Pos.I2().InRect(vec.I2{X: 915, Y: 315}, vec.I2{X: 924, Y: 323}) },
 			Dialogues: []awakengine.DialogueLine{
 				{Avatar: avatarAwakeman, Text: "Perhaps..."},
 				{Avatar: avatarAwakeman, Text: "Maybe I was teleported here, not the other way around!"},
