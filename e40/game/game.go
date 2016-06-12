@@ -15,8 +15,6 @@
 package game
 
 import (
-	"log"
-
 	"github.com/DrJosh9000/awakeman/common"
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
@@ -40,7 +38,6 @@ func New(levelPreview, noTriggers bool) *Game {
 	if levelPreview {
 		ps = 2
 		cs = ts
-		//cs = vec.I2{512, 256}
 	}
 	scene := awakengine.NewScene(cs, ts)
 	/*for _, d := range l.Doodads {
@@ -88,8 +85,6 @@ func (*Game) Font() awakengine.Font {
 
 func (g *Game) Handle(e awakengine.Event) {
 	if e.Type == awakengine.EventMouseUp {
-		//goalAckMarker.Begin(e.ScenePos, e.Time)
-		log.Printf("e.WorldPos: %v", e.WorldPos)
 		goalAckMarker.ResetAnim()
 		goalAckMarker.Pos = e.WorldPos.F2()
 		goalAckMarker.SetVisible(true)
@@ -97,14 +92,13 @@ func (g *Game) Handle(e awakengine.Event) {
 	}
 	if len(playerDelegate.Path()) == 0 {
 		goalAckMarker.SetVisible(false)
-		// log.Printf("goalAckMarker sheet: %#v", goalAckMarker.SpriteDelegate.SpriteSheet(goalAckMarker))
 	}
 	g.scene.CameraFocus(player.Pos.I2())
 }
 
 // Player returns the player unit.
-func (*Game) Player() awakengine.Unit {
-	return playerDelegate
+func (*Game) Player() (awakengine.Unit, *awakengine.Sprite) {
+	return playerDelegate, player
 }
 
 func (g *Game) Scene() *awakengine.Scene { return g.scene }
