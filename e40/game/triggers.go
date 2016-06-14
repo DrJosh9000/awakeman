@@ -60,7 +60,8 @@ var (
 		title:  `Contemporary Cryptology`,
 		author: `G. J. Simmons`,
 		contents: []*awakengine.DialogueLine{
-			{Avatar: avatarBook, Text: `We have used the term 'subspace' imprecisely--and will continue to do so--to indicate a geometric object in an affine space that is either a subspace or is isomorphic to a subspace.`},
+			{Avatar: avatarBook, Text: `We have used the term 'subspace' imprecisely--and will continue to do so--`},
+			{Avatar: avatarBook, Text: `to indicate a geometric object in an affine space that is either a subspace or is isomorphic to a subspace.`},
 			{Avatar: avatarBook, Text: `These objects are properly called *flats*, and only those flats that include the origin are actually subspaces.`},
 			{Avatar: avatarAwakeman, Text: `Another theory-heavy book. It's also a physically heavy book.`},
 		},
@@ -114,7 +115,8 @@ var (
 		title:  `How to Stay Sane`,
 		author: `Philippa Perry`,
 		contents: []*awakengine.DialogueLine{
-			{Avatar: avatarBook, Text: `I have included this section on stories because a part of every successful therapy is about re-writing the narratives that define us, making new meaning and imagining different endings.`},
+			{Avatar: avatarBook, Text: `I have included this section on stories because a part of every successful therapy is about re-writing the narratives that define us,`},
+			{Avatar: avatarBook, Text: `making new meaning and imagining different endings.`},
 			{Avatar: avatarBook, Text: `In the same way, part of staying sane is knowing what our story is and rewriting it when we need to.`},
 			{Avatar: avatarAwakeman, Text: `I can't exactly write myself out of being trapped in here.`},
 		},
@@ -148,6 +150,7 @@ var (
 			{Avatar: avatarAwakeman, Text: `This book is brightly-coloured, like fire.`},
 			{Avatar: avatarDucky, Text: `Quack!`},
 			{Avatar: avatarAwakeman, Text: `Packed full of wisdom?`},
+			{Avatar: avatarAwakeman, Text: `I wonder if there's a book that will teach me how to speak "duck".`},
 		},
 	}
 	bookMakeGoodArt = &book{
@@ -180,6 +183,8 @@ var (
 			{Avatar: avatarBook, Text: `To grasp this sorry Scheme of Things entire,`},
 			{Avatar: avatarBook, Text: `Would not we shatter it to bits--and then`},
 			{Avatar: avatarBook, Text: `Re-mould it nearer to the Heart's Desire!`},
+			{Avatar: avatarAwakeman, Text: `You got that right.`},
+			{Avatar: avatarAwakeman, Text: `Stupid spiral.`},
 		},
 	}
 	bookSnuff = &book{
@@ -197,14 +202,15 @@ var (
 		author: `Andrew Fuller`,
 		contents: []*awakengine.DialogueLine{
 			{Avatar: avatarBook, Text: `How to spot a Controller`},
-			{Avatar: avatarBook, Text: `This group contains the control freaks, the pedants, the outcome-obsessed meddlers, the end-justifies-the-means operators, the micro-managers and the nitpickers--and that's the most broad-minded of them.`},
+			{Avatar: avatarBook, Text: `This group contains the control freaks, the pedants, the outcome-obsessed meddlers, the end-justifies-the-means operators, the micro-managers and the nitpickers--`},
+			{Avatar: avatarBook, Text: `and that's the most broad-minded of them.`},
 			{Avatar: avatarBook, Text: `Controllers are people who are happy if things are going their way.`},
 			{Avatar: avatarBook, Text: `Veer away from their wishes, however, and you will see an entirely different side of them.`},
 			{Avatar: avatarAwakeman, Text: `. . .`},
 			{Avatar: avatarAwakeman, Text: `Were Major Condiment and Library Wizard control freaks?`},
 			{Avatar: avatarAwakeman, Text: `Seems most likely that this situation is retaliation over the bridge night cancellation . . .`},
 			{Avatar: avatarAwakeman, Text: `. . . and that small matter of exiling them from town.`},
-			{Avatar: avatarAwakeman, Text: `Well, it's working. I feel bad.`, Slowness: 2},
+			{Avatar: avatarAwakeman, Text: `Well, it's working. I feel bad.`, Slowness: 4},
 		},
 	}
 	bookUnixInANutshell = &book{
@@ -282,15 +288,6 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 		return nil
 	}
 	return []*awakengine.Trigger{
-		// ------------------------ TEST ---------------------------
-		/*{
-			Name:  "test",
-			Tiles: []vec.I2{{5, 6}},
-			Fire: func(int) {
-				awakengine.PushDialogue(&awakengine.DialogueLine{Text: "Test!"})
-			},
-		},*/
-
 		// ------------------------ START ---------------------------
 		{
 			Name: "startGame",
@@ -352,7 +349,8 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
 					{Avatar: avatarAwakeman, Text: `These new columns are fancy.`},
 					{Avatar: avatarAwakeman, Text: `. . .`},
-					{Avatar: avatarAwakeman, Text: `Actually, they look pretty old. Guess I never noticed them in the office before.`},
+					{Avatar: avatarAwakeman, Text: `Actually, they look pretty old.`},
+					{Avatar: avatarAwakeman, Text: `Guess I never noticed them in the office before.`},
 					{Avatar: avatarAwakeman, Text: `Something about having a ton of books nearby makes them stand out?`},
 				}...)
 			},
@@ -377,7 +375,7 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
 					{Avatar: avatarAwakeman, Text: `This seems to be the Fifty Shades of Grey section.`},
 					{Avatar: avatarAwakeman, Text: `Like, a *lot* of copies of Fifty Shades . . .`},
-					{Avatar: avatarAwakeman, Text: `I don't really feel like reading it right now, but there might be some more interesting-looking books on the left.`},
+					{Avatar: avatarAwakeman, Text: `I don't really feel like reading it right now, but there might be some more interesting-looking books elsewhere.`},
 				}...)
 			},
 		},
@@ -404,8 +402,7 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Fire:  bookHowToStaySane.offerToRead,
 		},
 		{
-			Name: "bookLoseFriendsAndInfurate",
-			//Active: func(int) bool { return player.Pos.I2().InRect(vec.I2{X: 160, Y: 480}, vec.I2{X: 191, Y: 496}) },
+			Name:  "bookLoseFriendsAndInfurate",
 			Tiles: []vec.I2{{10, 30}, {11, 30}},
 			Fire:  bookLoseFriendsAndInfurate.offerToRead,
 		},
@@ -440,6 +437,30 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Fire:  bookTrickyPeople.offerToRead,
 		},
 
+		// --------- Just outside the spiral ---------
+		{
+			Name:  "bookHyperboleAndAHalf",
+			Tiles: []vec.I2{{26, 16}, {27, 16}},
+			Fire:  bookHyperboleAndAHalf.offerToRead,
+		},
+		{
+			Name:  "bookRubaiyat",
+			Tiles: []vec.I2{{28, 16}, {29, 16}},
+			Fire:  bookRubaiyat.offerToRead,
+		},
+
+		// --------- Out the spiral and up ---------
+		{
+			Name:  "bookProofsAndRefutations",
+			Tiles: []vec.I2{{27, 9}, {28, 9}},
+			Fire:  bookProofsAndRefutations.offerToRead,
+		},
+		{
+			Name:  "bookiOSSwiftGameDevCookbook",
+			Tiles: []vec.I2{{29, 9}, {30, 9}},
+			Fire:  bookiOSSwiftGameDevCookbook.offerToRead,
+		},
+
 		// ------------------------ THE SPIRAL ---------------------------
 
 		{
@@ -452,7 +473,34 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 				}...)
 			},
 		},
-
+		{
+			Name:  "leading inwards",
+			Tiles: []vec.I2{{38, 29}},
+			Fire: func(int) {
+				awakengine.PushDialogue([]*awakengine.DialogueLine{
+					{Avatar: avatarAwakeman, Text: `Oh . . . what?`},
+					{Avatar: avatarAwakeman, Text: `More?`},
+				}...)
+			},
+		},
+		{
+			Name:  "inwards 2",
+			Tiles: []vec.I2{{39, 14}},
+			Fire: func(int) {
+				awakengine.PushDialogue(&awakengine.DialogueLine{
+					Avatar: avatarAwakeman, Text: `Wha?`,
+				})
+			},
+		},
+		{
+			Name:  "inwards 3",
+			Tiles: []vec.I2{{53, 19}},
+			Fire: func(int) {
+				awakengine.PushDialogue(&awakengine.DialogueLine{
+					Avatar: avatarAwakeman, Text: `Ha, ha.`,
+				})
+			},
+		},
 		{
 			Name:  "before the centre",
 			Tiles: []vec.I2{{45, 25}},
@@ -462,7 +510,6 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 				})
 			},
 		},
-
 		{
 			Name:  "spiral centre",
 			Tiles: []vec.I2{{47, 20}},
@@ -491,7 +538,6 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 				}...)
 			},
 		},
-
 		{
 			Name:  "past the centre",
 			Tiles: []vec.I2{{53, 22}},
@@ -520,7 +566,56 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			},
 		},
 
-		// ------------------------ THE END ---------------------------
+		{
+			Name:  "spiral exit",
+			Tiles: []vec.I2{{34, 17}},
+			Fire: func(int) {
+				awakengine.PushDialogue([]*awakengine.DialogueLine{
+					{Avatar: avatarAwakeman, Text: `The exit!`},
+					{Avatar: avatarAwakeman, Text: `. . . from the spiral of complete pointlessness.`},
+					{Avatar: avatarAwakeman, Text: `Why did I have to go through that?`},
+				}...)
+			},
+		},
 
+		// ------------------------ THE END ---------------------------
+		{
+			Name:  "booksWithSecrets",
+			Tiles: []vec.I2{{53, 6}, {54, 6}},
+			Fire: func(int) {
+				awakengine.PushDialogue([]*awakengine.DialogueLine{
+					{Avatar: avatarAwakeman, Text: `Endless maze of endless bookshelves.`},
+					{Avatar: avatarAwakeman, Text: `Okay, let's try for a secret exit.`},
+					{Avatar: avatarAwakeman, Text: `If every fictional cliche is true, these things normally work via pulling the correct book out from the shelf.`},
+					{Avatar: avatarAwakeman, Text: `Gonna visualise myself, out, walking around in the fresh air, and just . . . *feel* which is the right book.`},
+					{Avatar: avatarAwakeman, Text: `I choose you!`},
+					{Text: `(Awakeman pulls on "The Secret" by Rhonda Byrne.)`},
+					{Avatar: avatarBook, Text: `*nothing happens*`},
+					{Avatar: avatarAwakeman, Text: `Darn. Okay.`},
+					{Avatar: avatarAwakeman, Text: `Let's try again.`},
+					{Text: `(Awakeman pulls on "The Secret of the Golden Flower" by Lu Dongbin as translated by Thomas Cleary.)`},
+					{Avatar: avatarBook, Text: `*nothing happens*`},
+					{Avatar: avatarAwakeman, Text: `Ahhhhh . . . this one.`},
+					{Text: `(Awakeman pulls on "The Secret Life of Walter Mitty" by James Thurber.)`},
+					{Avatar: avatarBook, Text: `*nothing happens*`},
+					{Avatar: avatarAwakeman, Text: `Grargh!`},
+					{Avatar: avatarAwakeman, Text: `Reveal your secrets!`},
+					{Text: `(Awakeman pulls on "The Secret River" by Kate Grenville.)`},
+					{Avatar: avatarBook, Text: `*nothing happens*`},
+					{Avatar: avatarAwakeman, Text: `Screw this bookshelf!`},
+					{Text: `(In frustration, Awakeman kicks the shelf, and "Harry Potter and the Chamber of Secrets" by J. K. Rowling falls out . . . `},
+					{Text: `(. . . revealing a small cavity in the shelf.)`},
+					{Avatar: avatarAwakeman, Text: `*deep breath*`},
+					{Avatar: avatarAwakeman, Text: `Sorry, Harry. I'm not a wizard.`},
+					{Avatar: avatarAwakeman, Text: `But I have arms.`},
+					{Text: `(Awakeman reaches into the cavity and finds . . .)`},
+					{Text: `(An old-fashioned key.)`},
+					{Avatar: avatarAwakeman, Text: `*sob*!`},
+					{Avatar: avatarAwakeman, Text: `Huzzah!`},
+					{Avatar: avatarAwakeman, Text: `A completely useless key!`},
+					{Text: `(Awakeman takes the key anyway.)`},
+				}...)
+			},
+		},
 	}
 }
