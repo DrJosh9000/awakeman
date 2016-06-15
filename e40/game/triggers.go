@@ -24,7 +24,7 @@ import (
 var (
 	avatarsSheet = &awakengine.Sheet{
 		Key:        "inv_avatars",
-		FrameInfos: awakengine.BasicFrameInfos(6, -1, vec.I2{0, 0}),
+		FrameInfos: awakengine.BasicFrameInfos(7, -1, vec.I2{0, 0}),
 		FrameSize:  vec.I2{34, 64},
 	}
 
@@ -34,6 +34,7 @@ var (
 	avatarAlamore         = &awakengine.SheetFrame{avatarsSheet, 3}
 	avatarAwakemanOnPhone = &awakengine.SheetFrame{avatarsSheet, 4}
 	avatarBook            = &awakengine.SheetFrame{avatarsSheet, 5}
+	avatarDoor            = &awakengine.SheetFrame{avatarsSheet, 6}
 
 	bookEmpty = &book{
 		title:  ``,
@@ -44,6 +45,11 @@ var (
 		},
 	}
 
+	// TODO: a real inventory system
+	hasKey        = false
+	exitTileCount = 0
+
+	// --------- REAL BOOKS ---------
 	book1984 = &book{
 		title:  `Nineteen Eighty-Four`,
 		author: `George Orwell`,
@@ -68,7 +74,7 @@ var (
 	}
 	bookDavidsonsPrinciples = &book{
 		title:  `Davidson's Principles and Practice of Medicine, 19th Ed.`,
-		author: `Sir Stanley Davidson; ed. by Haslett, Chilvers, Boon, Colledge & Hunter`,
+		author: `Stanley Davidson, edited by Haslett, Chilvers, Boon, Colledge & Hunter`,
 		contents: []*awakengine.DialogueLine{
 			{Avatar: avatarAwakeman, Text: `Oof! This is quite a hefty yellow tome.`},
 			{Avatar: avatarBook, Text: "Acute Metabolic Complications\nHypoglycaemia"},
@@ -104,7 +110,7 @@ var (
 		author: `Madeleine Rosca`,
 		contents: []*awakengine.DialogueLine{
 			{Avatar: avatarAwakeman, Text: `It's a manga!`},
-			{Avatar: avatarAwakeman, Text: `Someone who runs this library has good taste!`},
+			{Avatar: avatarAwakeman, Text: `Someone has good taste.`},
 			{Avatar: avatarBook, Text: `Hmmm...the coordinates just aren't right...Where could it be?`},
 			{Avatar: avatarBook, Text: `Doctor Bleak?`},
 			{Avatar: avatarBook, Text: `Were you...doing something? I heard a funny noise.`},
@@ -126,9 +132,15 @@ var (
 		author: `Allie Brosh`,
 		contents: []*awakengine.DialogueLine{
 			{Avatar: avatarBook, Text: `Depression Part One`},
-			{Avatar: avatarBook, Text: `Some people have a legitimate reason to feel depressed, but not me. I just woke up one day feeling arbitrarily sad and helpless.`},
-			{Avatar: avatarBook, Text: `It's disappointing to feel sad for no reason. Sadness can be alomst pleasantly indulgent when you have a way to justify it.`},
+			{Avatar: avatarBook, Text: `Some people have a legitimate reason to feel depressed, but not me.`},
+			{Avatar: avatarBook, Text: `I just woke up one day feeling arbitrarily sad and helpless.`},
+			{Avatar: avatarBook, Text: `It's disappointing to feel sad for no reason. Sadness can be almost pleasantly indulgent when you have a way to justify it.`},
 			{Avatar: avatarAwakeman, Text: `I'm pretty sure depression is a totally legitimate reason to feel depressed.`},
+			{Avatar: avatarAwakeman, Text: `Is being trapped in here a legitimate reason?`},
+			{Avatar: avatarAwakeman, Text: `Is being told to find a long-lost painting by your probably-dead friend a legitimate reason?`},
+			{Avatar: avatarAwakeman, Text: `Is having a dead phone and a companion that only quacks a legitimate reason?`},
+			{Avatar: avatarAwakeman, Text: `. . .`},
+			{Avatar: avatarAwakeman, Text: `Is being kept awake until the wee hours of the morning most nights by your deputy, trying to run a town, a legitimate reason?`},
 		},
 	}
 	bookiOSSwiftGameDevCookbook = &book{
@@ -184,7 +196,7 @@ var (
 			{Avatar: avatarBook, Text: `Would not we shatter it to bits--and then`},
 			{Avatar: avatarBook, Text: `Re-mould it nearer to the Heart's Desire!`},
 			{Avatar: avatarAwakeman, Text: `You got that right.`},
-			{Avatar: avatarAwakeman, Text: `Stupid spiral.`},
+			{Avatar: avatarAwakeman, Text: `Re-mould the stupid spiral.`},
 		},
 	}
 	bookSnuff = &book{
@@ -210,7 +222,8 @@ var (
 			{Avatar: avatarAwakeman, Text: `Were Major Condiment and Library Wizard control freaks?`},
 			{Avatar: avatarAwakeman, Text: `Seems most likely that this situation is retaliation over the bridge night cancellation . . .`},
 			{Avatar: avatarAwakeman, Text: `. . . and that small matter of exiling them from town.`},
-			{Avatar: avatarAwakeman, Text: `Well, it's working. I feel bad.`, Slowness: 4},
+			{Avatar: avatarAwakeman, Text: `Well, it's working . . .`},
+			{Avatar: avatarAwakeman, Text: `I feel bad about doing that.`, Slowness: 4},
 		},
 	}
 	bookUnixInANutshell = &book{
@@ -224,6 +237,7 @@ var (
 		},
 	}
 
+	// --------- FAKE BOOKS ---------
 	bookLibraryWizardLaw = &book{
 		title:  `Advanced Library Magic, International Revised Ed.`,
 		author: `Bernard K. Leftfiddle`,
@@ -231,15 +245,31 @@ var (
 			{Avatar: avatarBook, Text: `Chapter 1. Fundamental Laws of Library Magic`},
 			{Avatar: avatarAwakeman, Text: `Aha! Maybe there's something in here that will help me get out of here, or prevent having a whole spontaneous library crushing the office again.`},
 			{Avatar: avatarBook, Text: `Primary Tenets`},
-			{Avatar: avatarBook, Text: `1. A library magic-user may not damage a book, or through inaction, cause a book to come to harm.`},
+			{Avatar: avatarBook, Text: `1. A Library Magic-user may not damage a book, or through inaction, cause a book to come to harm.`},
 			{Avatar: avatarAwakeman, Text: `Makes sense. All they really care about is books anyway.`},
-			{Avatar: avatarBook, Text: `2. The purpose of books and libraries is the dissemination of knowledge; the application of library magic more so.`},
-			{Avatar: avatarBook, Text: `3. Library magic cannot be used against patrons of the library, even for the purpose of extracting overdue fees or quieting rowdy readers.`},
+			{Avatar: avatarBook, Text: `2. The purpose of books and libraries is the dissemination of knowledge; the application of Library Magic more so.`},
+			{Avatar: avatarBook, Text: `3. In physical terms, Library Magic applies only to books, shelves, and other such items required for operating a library.`},
+			{Avatar: avatarAwakeman, Text: `Which is why I'm blocked on all paths by books and not landmines.`},
+			{Avatar: avatarBook, Text: `4. Library Magic cannot be used against patrons of the library, even for the purpose of extracting overdue fees or quieting rowdy readers.`},
 			{Avatar: avatarAwakeman, Text: `That's . . . `},
-			{Avatar: avatarAwakeman, Text: `If library magic can't be used against patrons,`},
-			{Avatar: avatarAwakeman, Text: `Why am I swimming in books?`},
-			{Avatar: avatarAwakeman, Text: `Isn't this spontaneous library an example of weaponised library magic?`},
-			{Avatar: avatarAwakeman, Text: `Maybe Library Wizard is in serious trouble with the library magic police!`},
+			{Avatar: avatarAwakeman, Text: `If Library Magic can't be used against patrons, why am I swimming in books?`},
+			{Avatar: avatarAwakeman, Text: `Isn't this spontaneous library an example of weaponised Library Magic?`},
+			{Avatar: avatarAwakeman, Text: `Maybe Library Wizard is in serious trouble with the Library Magic police!`},
+		},
+	}
+
+	bookGLProject = &book{
+		title:  `G. L.`,
+		author: `A. D. P.`,
+		contents: []*awakengine.DialogueLine{
+			{Avatar: avatarBook, Text: "G. L. PROJECT\n\nCONFIDENTIAL"},
+			{Avatar: avatarBook, Text: `[REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED]`},
+			{Avatar: avatarAwakeman, Text: `It's all black rectangles and "redacteds".`},
+			{Avatar: avatarAwakeman, Text: `Wait . . .`},
+			{Avatar: avatarAwakeman, Text: `There's some kind of diagram?`},
+			{Avatar: avatarAwakeman, Text: `I can't tell what it is.`},
+			{Avatar: avatarAwakeman, Text: `Science Jesus probably c--. . .`},
+			{Avatar: avatarAwakeman, Text: `*sob*`},
 		},
 	}
 )
@@ -296,11 +326,13 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 					{Text: "Awakeman! No. 40: Escape from the Dark Library\n\n(Click or tap to advance the dialogue.)", Slowness: -1},
 					{Avatar: avatarAwakeman, Text: `*sigh*`, Slowness: 4},
 					{Avatar: avatarDucky, Text: `Quack?`},
-					{Avatar: avatarAwakeman, Text: `It's not you, Ducky. I'm glad my ear isn't being talked off by Alamore, but it's at the expense of my phone being dead.`},
+					{Avatar: avatarAwakeman, Text: `It's not you, Ducky.`},
+					{Avatar: avatarAwakeman, Text: `I'm relieved that my ear isn't being talked off by Alamore anymore, but . . .`},
+					{Avatar: avatarAwakeman, Text: `But now my phone is dead.`},
 					{Avatar: avatarDucky, Text: `Quaaaaack.`},
 					{Avatar: avatarAwakeman, Text: `Yeah. It was my light source.`},
 					{Avatar: avatarAwakeman, Text: `. . .`, Slowness: 4},
-					{Avatar: avatarAwakeman, Text: `Hey, don't suppose you have a built-in light?`},
+					{Avatar: avatarAwakeman, Text: `Hey, don't suppose you have a built-in light of some kind?`},
 					{Avatar: avatarDucky, Text: `Quack quack.`},
 					{Text: "(Click or tap on things to move & interact.)"},
 				}...)
@@ -309,7 +341,7 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 
 		{
 			Name:    "it's dark in here",
-			Active:  func(f int) bool { return f > 20*6 },
+			Active:  func(f int) bool { return f > 20*12 },
 			Depends: []string{"startGame"},
 			Fire: func(int) {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
@@ -322,18 +354,18 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 					{Avatar: avatarAwakeman, Text: `What?`},
 					{Avatar: avatarSJ, Text: `Hello! Hello? Can you hear m--`, AutoNext: true},
 					{Avatar: avatarAwakeman, Text: `Yeah, I can hear you. Science Jesus? You're talking to me through the duck?`},
-					{Avatar: avatarSJ, Text: "Oh good, you picked up.\nYes, I'm talking through the duck!\nAsk a silly question, get a silly answer."},
+					{Avatar: avatarSJ, Text: "Oh good, you picked up--Yes, I'm talking through the duck!\nAsk a silly question, get a silly answer."},
 					{Avatar: avatarSJ, Text: "Where are you?"},
 					{Avatar: avatarAwakeman, Text: "I'm in the office, it's dark and cold and my phone is dead and", AutoNext: true},
-					{Avatar: avatarSJ, Text: "That's not...huh...", AutoNext: true, Slowness: 2},
+					{Avatar: avatarSJ, Text: "That's not . . . huh . . .", AutoNext: true, Slowness: 2},
 					{Avatar: avatarAwakeman, Text: "and there's books everywhere and the power is out and", AutoNext: true},
-					{Avatar: avatarSJ, Text: "I need to check on something. But I think you can find my painting nearby!"},
+					{Avatar: avatarSJ, Text: "I need to check on something. But I rang because I think you can find my painting nearby!"},
 					{Avatar: avatarAwakeman, Text: ". . .", Slowness: 8},
 					{Avatar: avatarAwakeman, Text: "Your *painting*?", Slowness: 2},
 					{Avatar: avatarSJ, Text: `You're still going to find it for me, right? Sorry, gotta make like a tree and "split". Ciao!`},
 					{Text: "*click*"},
 					{Avatar: avatarDucky, Text: `Quack!`},
-					{Avatar: avatarAwakeman, Text: `It's "make like a tree and" . . .`},
+					{Avatar: avatarAwakeman, Text: `It's "make like a tree and l--" . . .`},
 					{Avatar: avatarAwakeman, Text: `*sigh*`},
 					{Avatar: avatarAwakeman, Text: `Who cares.`},
 				}...)
@@ -468,8 +500,9 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Tiles: []vec.I2{{59, 16}},
 			Fire: func(int) {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
-					{Avatar: avatarAwakeman, Text: `A long corridor. What's at the end?`},
-					{Avatar: avatarAwakeman, Text: `I don't remember having such a long corridor in the office.`},
+					{Avatar: avatarAwakeman, Text: `A long corridor.`},
+					{Avatar: avatarAwakeman, Text: `. . .`},
+					{Avatar: avatarAwakeman, Text: `What a chore.`},
 				}...)
 			},
 		},
@@ -480,6 +513,7 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
 					{Avatar: avatarAwakeman, Text: `Oh . . . what?`},
 					{Avatar: avatarAwakeman, Text: `More?`},
+					{Avatar: avatarAwakeman, Text: `Just let it be over, let it be over`},
 				}...)
 			},
 		},
@@ -505,9 +539,15 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Name:  "before the centre",
 			Tiles: []vec.I2{{45, 25}},
 			Fire: func(int) {
-				awakengine.PushDialogue(&awakengine.DialogueLine{
-					Avatar: avatarAwakeman, Text: `How long is this going to go on for?`,
-				})
+				awakengine.PushDialogue([]*awakengine.DialogueLine{
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `*blink*`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `*sob*`},
+				}...)
 			},
 		},
 		{
@@ -515,26 +555,70 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Tiles: []vec.I2{{47, 20}},
 			Fire: func(int) {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
-					{Avatar: avatarAwakeman, Text: `What th`},
-					{Avatar: avatarAwakeman, Text: `What is THE POINT of this spiralling corridor?`},
-					{Avatar: avatarAwakeman, Text: `This is most terrible architecture it has ever been my misfortune to walk through!`},
-					{Avatar: avatarAwakeman, Text: `Why would you make people walk almost the maximum possible distance?`},
-					{Avatar: avatarAwakeman, Text: `What is the point?`},
-					{Avatar: avatarAwakeman, Text: `I don't--I don't get it!`},
-					{Avatar: avatarAwakeman, Text: `Not even government bureaucracy is this wasteful.`},
-					{Avatar: avatarAwakeman, Text: `I . . .`},
-					{Avatar: avatarAwakeman, Text: `I can't even`},
-					{Avatar: avatarAwakeman, Text: `Why?`},
-					{Avatar: avatarAwakeman, Text: `Is there some secret here?`},
-					{Avatar: avatarAwakeman, Text: `Is it an altar used by some bizarre cult?`},
-					{Avatar: avatarAwakeman, Text: `Why would you do put this in the town council office?`},
 					{Avatar: avatarAwakeman, Text: `*sob*`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `Here I am, at the center of some kind of. . . a spiral.`},
+					{Avatar: avatarAwakeman, Text: `I don't understand.`},
+					{Avatar: avatarAwakeman, Text: `I don't understand any of it.`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `This is the most terrible thing it has ever been my misfortune to walk through.`},
+					{Avatar: avatarAwakeman, Text: `Why would you make people walk almost the maximum possible distance?`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `What is the point?`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `I don't`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `I don't get it!`},
+					{Avatar: avatarAwakeman, Text: `Not even government bureaucracy is this wasteful.`},
+					{Avatar: avatarAwakeman, Text: `Why would you put this in the town council office?`},
+					{Avatar: avatarAwakeman, Text: `. . .`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `Why?`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `Is there some secret here?`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `Am I going insane?`},
+					{Avatar: avatarAwakeman, Text: `Am I imagining this?`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `*sob*`},
+					{Avatar: avatarAwakeman, Text: ``},
 					{Avatar: avatarAwakeman, Text: `WHY?`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `*sob*`},
+					{Avatar: avatarAwakeman, Text: `Is there no way out of here?`},
 					{Avatar: avatarAwakeman, Text: `. . . . . . . .`, Slowness: 8},
+					{Avatar: avatarDucky, Text: `*click*`},
+					{Text: `(A recording starts to play.)`},
+					{Avatar: avatarSJ, Text: `Awakeman. Ahem . . . `},
 					{Avatar: avatarAwakeman, Text: `. . .`, Slowness: 4},
+					{Avatar: avatarSJ, Text: `Listen.`},
+					{Avatar: avatarSJ, Text: `I believe I've involved myself in something extremely dangerous.`},
+					{Avatar: avatarSJ, Text: `And I've accidentally involved you, maybe.`},
+					{Avatar: avatarSJ, Text: `If you're hearing this. . . oh, what a cliche.`},
+					{Avatar: avatarSJ, Text: `Look, I'm probably dead.`},
+					{Avatar: avatarSJ, Text: `Not likely to be a convenient time for you to hear this.`},
+					{Avatar: avatarSJ, Text: `And I've accidentally involved you.`},
+					{Avatar: avatarSJ, Text: `Well, you accidentally involved yourself . . . Unwittingly?`},
+					{Avatar: avatarSJ, Text: `I have some leads.`},
+					{Avatar: avatarSJ, Text: `I think you know what you need to find.`},
+					{Avatar: avatarSJ, Text: `Sorry, if I say too much on this . . .`},
+					{Avatar: avatarSJ, Text: `just. . .`},
+					{Avatar: avatarSJ, Text: `Good luck,`},
+					{Avatar: avatarSJ, Text: `my friend.`},
+					{Avatar: avatarDucky, Text: `*click*`},
 					{Avatar: avatarAwakeman, Text: `. . .`, Slowness: 2},
-					{Avatar: avatarAwakeman, Text: `This isn't the office,`, Slowness: 4},
-					{Avatar: avatarAwakeman, Text: `. . . is it.`},
+					{Avatar: avatarAwakeman, Text: `Great.`},
+					{Avatar: avatarAwakeman, Text: `It's . . .`},
+					{Avatar: avatarAwakeman, Text: `It's probably good that my feelings are totally numb right now.`},
+					{Avatar: avatarAwakeman, Text: `. . . . . . . . . . . . . . . . . . . . . . . .`, Slowness: 4, AutoNext: true},
+					{Avatar: avatarAwakeman, Text: `Shit.`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `Okay.`},
+					{Avatar: avatarAwakeman, Text: `I don't have the luxury of staying in here anymore.`},
+					{Avatar: avatarAwakeman, Text: `I don't have the luxury of wallowing in self-pity.`},
+					{Avatar: avatarAwakeman, Text: ``},
+					{Avatar: avatarAwakeman, Text: `Better get moving.`},
 				}...)
 			},
 		},
@@ -543,9 +627,18 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Tiles: []vec.I2{{53, 22}},
 			Fire: func(int) {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
-					{Avatar: avatarAwakeman, Text: `If I'm not in the office, where am I?`},
-					{Avatar: avatarAwakeman, Text: `. . .`, Slowness: 8},
-					{Avatar: avatarAwakeman, Text: `Some kind of perverse library. Books and building. How did I get here?`},
+					{Avatar: avatarAwakeman, Text: `What *is* this place?`},
+					{Avatar: avatarAwakeman, Text: `If I figure out why everything seems out of place, I might be able to get my bearings.`},
+					{Avatar: avatarAwakeman, Text: `. . . . . .`, Slowness: 8},
+					{Avatar: avatarAwakeman, Text: `Wait . . .`, Slowness: 4},
+					{Avatar: avatarAwakeman, Text: `This isn't the office, is it?`},
+					{Avatar: avatarDucky, Text: `Quack!`},
+					{Avatar: avatarAwakeman, Text: `. . . . . .`, Slowness: 8},
+					{Avatar: avatarAwakeman, Text: `I'm in some kind of perverse library, with a godawful spiral corridor.`},
+					{Avatar: avatarAwakeman, Text: `Books and building.`},
+					{Avatar: avatarAwakeman, Text: `But not the town council office.`},
+					{Avatar: avatarAwakeman, Text: `It *can't* be the office.`},
+					{Avatar: avatarAwakeman, Text: `The past mayors were never this profligate.`},
 				}...)
 			},
 		},
@@ -556,12 +649,20 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 			Fire: func(int) {
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
 					{Avatar: avatarAwakeman, Text: "The only sensible thing I can think of is . . ."},
-					{Avatar: avatarAwakeman, Text: `I was teleported here, into this library, not the other way around!`},
+					{Avatar: avatarAwakeman, Text: `I was teleported here, into this library, not the other way around.`},
 					{Avatar: avatarDucky, Text: "Quack!"},
-					{Avatar: avatarAwakeman, Text: `Who would do this?`},
-					{Avatar: avatarAwakeman, Text: `Do you know the secrets of teleportation?`},
+					{Avatar: avatarAwakeman, Text: `Unnngh. No, hang on . . .`},
+					{Avatar: avatarAwakeman, Text: `I read a book back there, I think . . . Library Magic only physically affects books and shelves and such.`},
+					{Avatar: avatarAwakeman, Text: `Not stick-figures.`},
+					{Avatar: avatarAwakeman, Text: `Oh, and there was the fact that I got a call from Condiment, right as it happened, taking credit.`},
+					{Avatar: avatarAwakeman, Text: `So the books must have been teleported on top of me!`},
+					{Avatar: avatarAwakeman, Text: `But this isn't the office!`},
+					{Avatar: avatarAwakeman, Text: `But I was in the office!`},
+					{Avatar: avatarAwakeman, Text: `. . .`},
 					{Avatar: avatarAwakeman, Text: `Argh!`},
-					{Avatar: avatarAwakeman, Text: `Where's Science Jesus when you need them?`},
+					{Avatar: avatarAwakeman, Text: `What the hell is going on!`},
+					{Avatar: avatarAwakeman, Text: `Having Science Jesus around would . . .`},
+					{Avatar: avatarAwakeman, Text: ``},
 				}...)
 			},
 		},
@@ -580,14 +681,62 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 
 		// ------------------------ THE END ---------------------------
 		{
-			Name:  "booksWithSecrets",
-			Tiles: []vec.I2{{53, 6}, {54, 6}},
+			Name:   "exitDoorLocked",
+			Tiles:  []vec.I2{{51, 3}},
+			Repeat: true,
 			Fire: func(int) {
+				if hasKey {
+					awakengine.PushDialogue([]*awakengine.DialogueLine{
+						{Text: `(Awakeman tries the key.)`},
+						{Avatar: avatarAwakeman, Text: `Doesn't fit in the lock.`},
+						{Avatar: avatarAwakeman, Text: `Doesn't fit anywhere.`},
+						{Text: `(Awakeman accidentally brushes the key past a fob-swipe with a small red light.)`},
+						{Avatar: avatarDoor, Text: `*beep* *beep* *beep*`},
+						{Avatar: avatarDoor, Text: `*click*`},
+						// TODO: roll credits
+					}...)
+					return
+				}
+				switch exitTileCount {
+				case 0:
+					awakengine.PushDialogue([]*awakengine.DialogueLine{
+						{Avatar: avatarAwakeman, Text: `THE EXIT!`},
+						{Avatar: avatarAwakeman, Text: `The real one!`},
+						{Text: `(Awakeman rattles the door handle.)`},
+						{Avatar: avatarAwakeman, Text: `It's locked!`},
+					}...)
+				case 1:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Avatar: avatarAwakeman, Text: `It's locked.`,
+					})
+				default:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Avatar: avatarAwakeman, Text: `It's . . . *still* locked.`,
+					})
+				}
+				exitTileCount++
+
+			},
+		},
+
+		{
+			Name:  "bookGLProject",
+			Tiles: []vec.I2{{55, 6}, {56, 6}},
+			Fire:  bookGLProject.offerToRead,
+		},
+
+		{
+			Name:    "booksWithSecrets",
+			Depends: []string{"exitDoorLocked"},
+			Tiles:   []vec.I2{{53, 6}, {54, 6}},
+			Fire: func(int) {
+				hasKey = true
 				awakengine.PushDialogue([]*awakengine.DialogueLine{
 					{Avatar: avatarAwakeman, Text: `Endless maze of endless bookshelves.`},
-					{Avatar: avatarAwakeman, Text: `Okay, let's try for a secret exit.`},
+					{Avatar: avatarAwakeman, Text: `Okay, let's try for a secret switch for the door.`},
 					{Avatar: avatarAwakeman, Text: `If every fictional cliche is true, these things normally work via pulling the correct book out from the shelf.`},
 					{Avatar: avatarAwakeman, Text: `Gonna visualise myself, out, walking around in the fresh air, and just . . . *feel* which is the right book.`},
+					{Avatar: avatarAwakeman, Text: `Even though I'm not feeling much of anything anymore.`},
 					{Avatar: avatarAwakeman, Text: `I choose you!`},
 					{Text: `(Awakeman pulls on "The Secret" by Rhonda Byrne.)`},
 					{Avatar: avatarBook, Text: `*nothing happens*`},
@@ -602,12 +751,13 @@ func (g *Game) Triggers() []*awakengine.Trigger {
 					{Avatar: avatarAwakeman, Text: `Reveal your secrets!`},
 					{Text: `(Awakeman pulls on "The Secret River" by Kate Grenville.)`},
 					{Avatar: avatarBook, Text: `*nothing happens*`},
+					{Avatar: avatarAwakeman, Text: `Argh!`},
 					{Avatar: avatarAwakeman, Text: `Screw this bookshelf!`},
 					{Text: `(In frustration, Awakeman kicks the shelf, and "Harry Potter and the Chamber of Secrets" by J. K. Rowling falls out . . . `},
 					{Text: `(. . . revealing a small cavity in the shelf.)`},
 					{Avatar: avatarAwakeman, Text: `*deep breath*`},
 					{Avatar: avatarAwakeman, Text: `Sorry, Harry. I'm not a wizard.`},
-					{Avatar: avatarAwakeman, Text: `But I have arms.`},
+					{Avatar: avatarAwakeman, Text: `But like you, I have arms.`},
 					{Text: `(Awakeman reaches into the cavity and finds . . .)`},
 					{Text: `(An old-fashioned key.)`},
 					{Avatar: avatarAwakeman, Text: `*sob*!`},

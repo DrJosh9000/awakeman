@@ -26,33 +26,36 @@ func (*Game) Level() (*awakengine.Level, error) {
 		MapSize:  sz,
 		BlockMap: bm,
 		BlockInfos: []awakengine.TileInfo{
-			{Name: "black"},
+			{Name: "black"}, // 0
 			{Name: "prism", Blocking: true},
 			{Name: "shelf_d_1", Blocking: true},
 			{Name: "shelf_d_2", Blocking: true},
 			{Name: "shelf_d_3", Blocking: true},
-			{Name: "shelf_d_4", Blocking: true},
+			{Name: "shelf_d_4", Blocking: true}, // 5
 			{Name: "shelf_r_1", Blocking: true},
 			{Name: "shelf_r_2", Blocking: true},
 			{Name: "shelf_r_3", Blocking: true},
 			{Name: "column", Blocking: true},
-			{Name: "stack", Blocking: true},
+			{Name: "stack", Blocking: true}, // 10
 			{Name: "desk", Blocking: true},
 			{Name: "wall_h", Blocking: true},
 			{Name: "wall_v", Blocking: true},
 			{Name: "wall_ul", Blocking: true},
-			{Name: "wall_ur", Blocking: true},
+			{Name: "wall_ur", Blocking: true}, // 15
 			{Name: "wall_dr", Blocking: true},
 			{Name: "wall_dl", Blocking: true},
 			{Name: "wall_+", Blocking: true},
 			{Name: "wall_-|", Blocking: true},
-			{Name: "wall_|-", Blocking: true},
+			{Name: "wall_|-", Blocking: true}, // 20
 			{Name: "wall_T'", Blocking: true},
 			{Name: "wall_T", Blocking: true},
 			{Name: "wall_hr", Blocking: true},
 			{Name: "wall_hl", Blocking: true},
-			{Name: "wall_vu", Blocking: true},
+			{Name: "wall_vu", Blocking: true}, // 25
 			{Name: "wall_vd", Blocking: true},
+			{Name: "exit_door", Blocking: true},
+			{Name: "exit_left", Blocking: true},
+			{Name: "exit_right", Blocking: true},
 		},
 		BlocksetKey: "libraryblocks",
 		TileSize:    16,
