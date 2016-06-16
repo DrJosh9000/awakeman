@@ -15,6 +15,8 @@
 package game
 
 import (
+	"log"
+
 	"github.com/DrJosh9000/awakeman/common"
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
@@ -47,24 +49,27 @@ func New(levelPreview, noTriggers bool) *Game {
 	scene.CameraFocus(player.Pos.I2())
 	goalAckMarker.View.SetParent(scene.World)
 	scene.AddPart(player, goalAckMarker)
-	/*
-		hud := &awakengine.HUDRegion{
-			Bubble: &awakengine.Bubble{
-				Key: "inv_bubble",
-				UL:  vec.I2{1, 7},
-				DR:  vec.I2{25, 56},
-			},
-			V: true,
-			R: false,
-		}
-		hud.AddToScene(scene)
 
-		itemsGrid := &awakengine.Grid{
-			GridDelegate: inventory,
-			ChildOf:      awakengine.ChildOf{hud.Bubble},
-		}
-		itemsGrid.AddToScene(scene)
-	*/
+	inventory.scene = scene
+	itemsBubble := &awakengine.Bubble{
+		Key:  "inv_bubble",
+		View: &awakengine.View{},
+	}
+	itemsBubble.SetParent(scene.HUD)
+	itemsBubble.AddToScene(scene)
+	itemsGrid := &awakengine.Grid{
+		GridDelegate: inventory,
+		View:         &awakengine.View{},
+	}
+	itemsGrid.SetPosition(vec.I2{1, 7})
+	itemsGrid.SetParent(itemsBubble.View)
+	itemsGrid.Reload()
+	//log.Printf("itemsGrid bounds after Reload: %#v", itemsGrid.Bounds())
+	itemsBubble.Surround(itemsGrid.LogicalBounds())
+	itemsGrid.SetPosition(vec.I2{5, 5}) // bubblePartSize
+	log.Printf("itemsGrid: %#v", itemsGrid)
+	//log.Printf("itemsGrid bounds after Surround: %#v", itemsGrid.Bounds())
+	//log.Printf("itemsBubble bounds after Surround: %#v", itemsBubble.Bounds())
 
 	return &Game{
 		pixelSize:    ps,

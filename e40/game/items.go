@@ -38,15 +38,17 @@ var (
 
 type Inventory struct {
 	items []*awakengine.SheetFrame
+	scene *awakengine.Scene
 }
 
 func (in *Inventory) ItemSize() vec.I2 { return itemsSheet.FrameSize }
 func (in *Inventory) Columns() int     { return 1 }
 func (in *Inventory) NumItems() int    { return len(in.items) }
 
-func (in *Inventory) Item(i int, par *awakengine.View) *awakengine.Sprite {
-	return &awakengine.Sprite{
-		View: par,
+func (in *Inventory) Item(i int, par *awakengine.View) {
+	iv := &awakengine.ImageView{
+		SheetFrame: in.items[i],
+		View:       par,
 	}
-	//	in.items[i]
+	in.scene.AddPart(iv)
 }

@@ -137,10 +137,10 @@ var (
 			{Avatar: avatarBook, Text: `It's disappointing to feel sad for no reason. Sadness can be almost pleasantly indulgent when you have a way to justify it.`},
 			{Avatar: avatarAwakeman, Text: `I'm pretty sure depression is a totally legitimate reason to feel depressed.`},
 			{Avatar: avatarAwakeman, Text: `Is being trapped in here a legitimate reason?`},
-			{Avatar: avatarAwakeman, Text: `Is being told to find a long-lost painting by your probably-dead friend a legitimate reason?`},
+			{Avatar: avatarAwakeman, Text: `Is being told, by your probably-dead friend, to find a long-lost painting a legitimate reason?`},
 			{Avatar: avatarAwakeman, Text: `Is having a dead phone and a companion that only quacks a legitimate reason?`},
+			{Avatar: avatarAwakeman, Text: `Is being run down and smothered by your deputy a legitimate reason?`},
 			{Avatar: avatarAwakeman, Text: `. . .`},
-			{Avatar: avatarAwakeman, Text: `Is being kept awake until the wee hours of the morning most nights by your deputy, trying to run a town, a legitimate reason?`},
 		},
 	}
 	bookiOSSwiftGameDevCookbook = &book{
