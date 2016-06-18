@@ -16,7 +16,6 @@ package game
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 
 	"github.com/DrJosh9000/awakengine"
@@ -60,12 +59,20 @@ func randWord(words []string) string { return words[rand.Intn(len(words))] }
 
 type ItemPhone struct{}
 
-func (ItemPhone) Icon() int { return itemPhone }
-func (ItemPhone) Handle(*awakengine.Event) bool {
-	log.Printf("ItemPhone.Handle")
-	awakengine.PushDialogue(&awakengine.DialogueLine{
-		Avatar: avatarAwakeman, Text: fmt.Sprintf("This is my phone. The %s is %s.", randWord(batteryNouns), randWord(batteryAdjectives)),
-	})
+func (i ItemPhone) Icon() int { return itemPhone }
+func (i ItemPhone) Handle(*awakengine.Event) bool {
+	awakengine.PushDialogue([]*awakengine.DialogueLine{
+		{Avatar: avatarAwakeman, Text: fmt.Sprintf("This is my phone. The %s is %s.", randWord(batteryNouns), randWord(batteryAdjectives))},
+		{Text: "(Discard the phone?)", Buttons: []*awakengine.ButtonSpec{
+			{Label: "Keep it"},
+			{Label: "Discard it", Action: func() {
+				awakengine.PushDialogue(&awakengine.DialogueLine{
+					Avatar: avatarAwakeman,
+					Text:   "Hey, I'm not discarding that!",
+				})
+			}},
+		}},
+	}...)
 	return true
 }
 
@@ -73,10 +80,17 @@ type ItemDucky struct{}
 
 func (ItemDucky) Icon() int { return itemDucky }
 func (ItemDucky) Handle(*awakengine.Event) bool {
-	log.Printf("ItemDucky.Handle")
-	awakengine.PushDialogue(&awakengine.DialogueLine{
-		Avatar: avatarDucky, Text: "Quack!",
-	})
+	awakengine.PushDialogue([]*awakengine.DialogueLine{
+		{Avatar: avatarDucky, Text: "Quack!"},
+		{Text: "(Discard the Ducky?)", Buttons: []*awakengine.ButtonSpec{
+			{Label: "Keep it"},
+			{Label: "Discard it", Action: func() {
+				awakengine.PushDialogue(&awakengine.DialogueLine{
+					Text: "(Awakeman tries to remove it, but it reappears in the inventory slot straight away.)",
+				})
+			}},
+		}},
+	}...)
 	return true
 }
 
@@ -84,9 +98,15 @@ type ItemBook book
 
 func (i *ItemBook) Icon() int { return itemBook }
 func (i *ItemBook) Handle(e *awakengine.Event) bool {
-	awakengine.PushDialogue(&awakengine.DialogueLine{
-		Text: fmt.Sprintf(`(It's a copy of "%s" by %s.)`, i.title, i.author),
-	})
+	awakengine.PushDialogue([]*awakengine.DialogueLine{
+		{Text: fmt.Sprintf(`(It's a copy of "%s" by %s.)`, i.title, i.author)},
+		{Text: "(Discard the book?)", Buttons: []*awakengine.ButtonSpec{
+			{Label: "Keep it"},
+			{Label: "Discard it", Action: func() {
+				inventory.RemoveItem(i)
+			}},
+		}},
+	}...)
 	return true
 }
 
@@ -109,12 +129,15 @@ func (in *Inventory) AddItems(items ...Item) {
 	in.Layout()
 }
 
-func (in *Inventory) RemoveItemAtIndex(index int) {
-	if last := len(in.items) - 1; index == last {
-		in.items = in.items[:last]
-	} else {
-		in.items = append(in.items[:index], in.items[index+1:]...)
+func (in *Inventory) RemoveItem(item Item) {
+	ni := in.items[:0]
+	for _, x := range in.items {
+		if x == item {
+			continue
+		}
+		ni = append(ni, x)
 	}
+	in.items = ni
 	in.Layout()
 }
 
@@ -135,6 +158,5 @@ func (in *Inventory) Item(i int, par *awakengine.View) {
 }
 
 func (in *Inventory) ItemHandle(i int, e *awakengine.Event) bool {
-	log.Printf("item %d handling event %v", i, e)
 	return in.items[i].Handle(e)
 }

@@ -285,7 +285,7 @@ type book struct {
 func (b *book) offerToRead(int) {
 	awakengine.PushDialogue(&awakengine.DialogueLine{
 		Text: "(Read a book?)",
-		Buttons: []awakengine.ButtonSpec{
+		Buttons: []*awakengine.ButtonSpec{
 			{Label: "Read it", Action: b.read},
 			{Label: "Leave it", Action: nil},
 		},
@@ -296,7 +296,7 @@ func (b *book) read() {
 	awakengine.PushDialogue(b.contents...)
 	awakengine.PushDialogueToBack(&awakengine.DialogueLine{
 		Text: "(Take this book?)",
-		Buttons: []awakengine.ButtonSpec{
+		Buttons: []*awakengine.ButtonSpec{
 			{Label: "Take it", Action: func() {
 				inventory.AddItems((*ItemBook)(b))
 				awakengine.PushDialogue(
