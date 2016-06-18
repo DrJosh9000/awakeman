@@ -15,8 +15,6 @@
 package game
 
 import (
-	"log"
-
 	"github.com/DrJosh9000/awakeman/common"
 	"github.com/DrJosh9000/awakengine"
 	"github.com/DrJosh9000/vec"
@@ -51,25 +49,19 @@ func New(levelPreview, noTriggers bool) *Game {
 	scene.AddPart(player, goalAckMarker)
 
 	inventory.scene = scene
-	itemsBubble := &awakengine.Bubble{
+	inventory.bubble = &awakengine.Bubble{
 		Key:  "inv_bubble",
 		View: &awakengine.View{},
 	}
-	itemsBubble.SetParent(scene.HUD)
-	itemsBubble.AddToScene(scene)
-	itemsGrid := &awakengine.Grid{
+	inventory.bubble.SetParent(scene.HUD)
+	inventory.bubble.AddToScene(scene)
+	inventory.grid = &awakengine.Grid{
 		GridDelegate: inventory,
 		View:         &awakengine.View{},
 	}
-	itemsGrid.SetPosition(vec.I2{1, 7})
-	itemsGrid.SetParent(itemsBubble.View)
-	itemsGrid.Reload()
-	//log.Printf("itemsGrid bounds after Reload: %#v", itemsGrid.Bounds())
-	itemsBubble.Surround(itemsGrid.LogicalBounds())
-	itemsGrid.SetPosition(vec.I2{5, 5}) // bubblePartSize
-	log.Printf("itemsGrid: %#v", itemsGrid)
-	//log.Printf("itemsGrid bounds after Surround: %#v", itemsGrid.Bounds())
-	//log.Printf("itemsBubble bounds after Surround: %#v", itemsBubble.Bounds())
+	inventory.grid.SetParent(inventory.bubble.View)
+
+	inventory.AddItems(ItemPhone{}, ItemDucky{})
 
 	return &Game{
 		pixelSize:    ps,
@@ -88,8 +80,11 @@ func (*Game) Font() awakengine.Font {
 	}
 }
 
-func (g *Game) Handle(e awakengine.Event) {
+func (g *Game) Handle(e *awakengine.Event) bool {
 	if e.Type == awakengine.EventMouseUp {
+		if inventory.grid.Handle(e) {
+			return true
+		}
 		goalAckMarker.ResetAnim()
 		goalAckMarker.Pos = e.WorldPos.F2()
 		goalAckMarker.SetVisible(true)
@@ -99,6 +94,7 @@ func (g *Game) Handle(e awakengine.Event) {
 		goalAckMarker.SetVisible(false)
 	}
 	g.scene.CameraFocus(player.Pos.I2())
+	return true
 }
 
 // Player returns the player unit.

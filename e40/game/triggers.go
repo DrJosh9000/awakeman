@@ -206,7 +206,7 @@ var (
 			{Avatar: avatarBook, Text: `Tears of the Mushroom picked up the plate and tentatively pushed it towards Vimes,`},
 			{Avatar: avatarBook, Text: `and said something that sounded like half a dozen coconuts rolling downstairs, but somehow managed to include the syllables *you* and *eat* and *I make*.`},
 			{Avatar: avatarBook, Text: `There seemed to be a pleading in her expression, as if trying to make him understand.`},
-			{Avatar: avatarAwakeman, Text: `Reading in the dark is more fun than Mayoring!`},
+			{Avatar: avatarAwakeman, Text: `I should read in the dark more often!`},
 		},
 	}
 	bookTrickyPeople = &book{
@@ -262,8 +262,10 @@ var (
 		title:  `G. L.`,
 		author: `A. D. P.`,
 		contents: []*awakengine.DialogueLine{
+			{Avatar: avatarAwakeman, Text: `It's the "G.L." folder I saw earlier.`},
+			{Avatar: avatarAwakeman, Text: `But I walked all the way over here?`},
 			{Avatar: avatarBook, Text: "G. L. PROJECT\n\nCONFIDENTIAL"},
-			{Avatar: avatarBook, Text: `[REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED]`},
+			{Avatar: avatarBook, Text: `[REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED] [REDACTED]`},
 			{Avatar: avatarAwakeman, Text: `It's all black rectangles and "redacteds".`},
 			{Avatar: avatarAwakeman, Text: `Wait . . .`},
 			{Avatar: avatarAwakeman, Text: `There's some kind of diagram?`},
@@ -296,6 +298,7 @@ func (b *book) read() {
 		Text: "(Take this book?)",
 		Buttons: []awakengine.ButtonSpec{
 			{Label: "Take it", Action: func() {
+				inventory.AddItems((*ItemBook)(b))
 				awakengine.PushDialogue(
 					&awakengine.DialogueLine{
 						Text: fmt.Sprintf(`(Awakeman took "%s" by %s.)`, b.title, b.author),
