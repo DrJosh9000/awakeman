@@ -39,15 +39,25 @@ type PlayerState struct {
 // Player encapsulates all the state of the player character.
 type Player struct {
 	// Templatey stuff
-	Anims  map[PlayerState]*awakengine.Sheet
-	UL, DR vec.I2
+	Anims     map[PlayerState]*awakengine.Sheet
+	UL, DR    vec.I2
+	AckMarker *awakengine.Sprite
 
 	// Instancey stuff
 	path  []vec.I2
 	state PlayerState
 }
 
-func (p *Player) SetPath(path []vec.I2) { p.path = path }
+func (p *Player) SetPath(path []vec.I2) {
+	p.path = path
+	if len(path) == 0 {
+		p.GoIdle()
+		return
+	}
+	p.AckMarker.ResetAnim()
+	p.AckMarker.Pos = path[len(path)-1].F2()
+	p.AckMarker.SetVisible(true)
+}
 
 func (p *Player) Footprint() (ul, dr vec.I2) { return p.UL, p.DR }
 
@@ -55,6 +65,7 @@ func (p *Player) GoIdle() {
 	p.state.A = PlayerActivityIdle
 	//p.Sprite.ResetAnim()
 	p.path = nil
+	p.AckMarker.SetVisible(false)
 }
 
 func (p *Player) Path() []vec.I2 { return p.path }

@@ -70,10 +70,30 @@ var (
 		DR:    vec.I2{4, 1},
 		Anims: playerAnims,
 		//State:  common.PlayerState{common.PlayerActivityIdle, vec.Right},
+		AckMarker: &awakengine.Sprite{
+			View: &awakengine.View{},
+			SpriteDelegate: &common.AckMarker{
+				Sheet: &awakengine.Sheet{
+					Key:       "inv_mark",
+					FrameSize: vec.I2{16, 16},
+					FrameInfos: []awakengine.FrameInfo{
+						// Start at 0, loop to 2.
+						{Next: 1, Offset: vec.I2{8, 8}},
+						{Next: 2, Offset: vec.I2{8, 8}},
+						{Next: 3, Offset: vec.I2{8, 8}},
+						{Next: 4, Offset: vec.I2{8, 8}},
+						{Next: 5, Offset: vec.I2{8, 8}},
+						{Next: 6, Offset: vec.I2{8, 8}},
+						{Next: 2, Offset: vec.I2{8, 8}},
+					},
+				},
+			},
+		},
 	}
 
 	player = &awakengine.Sprite{
-		Pos:            vec.F2{16*8 + 8, 16*4 + 8},
+		Pos: vec.F2{tileSize*8 + 8, tileSize*4 + 8},
+		//Pos:            vec.F2{tileSize*51 + 8, tileSize*7 + 8},
 		SpriteDelegate: playerDelegate,
 	}
 )

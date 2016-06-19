@@ -22,6 +22,8 @@ import (
 
 const windowTitle = "Awakeman! #40: Escape from the Dark Library"
 
+var gameOver = false
+
 // Game implements awakengine.Game
 type Game struct {
 	pixelSize    int
@@ -29,6 +31,8 @@ type Game struct {
 	noTriggers   bool
 	scene        *awakengine.Scene
 }
+
+var scene *awakengine.Scene
 
 // New creates a new Game.
 func New(levelPreview, noTriggers bool) *Game {
@@ -39,16 +43,15 @@ func New(levelPreview, noTriggers bool) *Game {
 		ps = 2
 		cs = ts
 	}
-	scene := awakengine.NewScene(cs, ts)
+	scene = awakengine.NewScene(cs, ts)
 	/*for _, d := range l.Doodads {
 		scene.AddObject(d)
 	}*/
 	player.View = scene.World
+	playerDelegate.AckMarker.View.SetParent(scene.World)
 	scene.CameraFocus(player.Pos.I2())
-	goalAckMarker.View.SetParent(scene.World)
-	scene.AddPart(player, goalAckMarker)
+	scene.AddPart(player, playerDelegate.AckMarker)
 
-	inventory.scene = scene
 	inventory.bubble = &awakengine.Bubble{
 		Key:  "inv_bubble",
 		View: &awakengine.View{},
@@ -61,7 +64,7 @@ func New(levelPreview, noTriggers bool) *Game {
 	}
 	inventory.grid.SetParent(inventory.bubble.View)
 
-	inventory.AddItems(ItemPhone{}, ItemDucky{})
+	inventory.AddItems(&ItemPhone{}, ItemDucky{})
 
 	return &Game{
 		pixelSize:    ps,
@@ -81,17 +84,14 @@ func (*Game) Font() awakengine.Font {
 }
 
 func (g *Game) Handle(e *awakengine.Event) bool {
+	if gameOver {
+		return true
+	}
 	if e.Type == awakengine.EventMouseUp {
 		if inventory.grid.Handle(e) {
 			return true
 		}
-		goalAckMarker.ResetAnim()
-		goalAckMarker.Pos = e.WorldPos.F2()
-		goalAckMarker.SetVisible(true)
 		playerDelegate.SetPath(awakengine.Navigate(player.Pos.I2(), e.WorldPos))
-	}
-	if len(playerDelegate.Path()) == 0 {
-		goalAckMarker.SetVisible(false)
 	}
 	g.scene.CameraFocus(player.Pos.I2())
 	return true

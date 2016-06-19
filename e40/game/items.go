@@ -29,7 +29,7 @@ var (
 		FrameInfos: awakengine.BasicFrameInfos(4, -1, vec.I2{0, 0}),
 	}
 
-	inventory = &Inventory{}
+	inventory = &Inventory{limit: 4}
 )
 
 const (
@@ -46,10 +46,14 @@ type Item interface {
 
 var (
 	batteryNouns = []string{
-		"battery", "energy", "electricity source", "lithium-ion component", "ion exchanger",
+		"battery", "energy storage", "electricity source", "lithium-ion component", "ion exchanger",
 	}
 	batteryAdjectives = []string{
-		"flat", "dead", "kaput", "drained", "exhausted", "all used up", "fully consumed", "in need of recharging",
+		"dead", "kaput", "drained", "exhausted", "all used up", "fully consumed", "in need of recharging",
+	}
+
+	duckyVerbs = []string{
+		"Actify", "Activate", "Actuate", "Energise", "Launch", "Mobilise", "Start", "Switch On", "Trigger",
 	}
 )
 
@@ -57,18 +61,46 @@ func randWord(words []string) string { return words[rand.Intn(len(words))] }
 
 // Some item implementations...
 
-type ItemPhone struct{}
+type ItemPhone struct {
+	activations int
+}
 
-func (i ItemPhone) Icon() int { return itemPhone }
-func (i ItemPhone) Handle(*awakengine.Event) bool {
+func (i *ItemPhone) Icon() int { return itemPhone }
+func (i *ItemPhone) Handle(*awakengine.Event) bool {
 	awakengine.PushDialogue([]*awakengine.DialogueLine{
 		{Avatar: avatarAwakeman, Text: fmt.Sprintf("This is my phone. The %s is %s.", randWord(batteryNouns), randWord(batteryAdjectives))},
-		{Text: "(Discard the phone?)", Buttons: []*awakengine.ButtonSpec{
-			{Label: "Keep it"},
-			{Label: "Discard it", Action: func() {
+		{Text: "(Do something with the phone?)", Buttons: []*awakengine.ButtonSpec{
+			{Label: "Do nothing"},
+			{Label: "Use", Action: func() {
+				switch i.activations {
+				case 0:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Text: "(The phone starts booting, then stops and displays instructions for connecting a charge cable. After a few seconds, it turns off again.)",
+					})
+				case 1:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Text: "(Instructions for connecting a charge cable breifly flicker across the screen, then it is off once again.)",
+					})
+				case 2, 3, 4:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Text: "(The phone is inoperable.)",
+					})
+				case 100:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Text: "(Look, I didn't implement a phone OS inside this silly game, so trying to use it is pointless.)",
+					})
+				default:
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Avatar: avatarAwakeman,
+						Text:   "Let's try doing something else.",
+					})
+				}
+				i.activations++
+			}},
+			{Label: "Discard", Action: func() {
 				awakengine.PushDialogue(&awakengine.DialogueLine{
 					Avatar: avatarAwakeman,
-					Text:   "Hey, I'm not discarding that!",
+					Text:   "Hey, I'm not discarding my phone!",
 				})
 			}},
 		}},
@@ -82,11 +114,14 @@ func (ItemDucky) Icon() int { return itemDucky }
 func (ItemDucky) Handle(*awakengine.Event) bool {
 	awakengine.PushDialogue([]*awakengine.DialogueLine{
 		{Avatar: avatarDucky, Text: "Quack!"},
-		{Text: "(Discard the Ducky?)", Buttons: []*awakengine.ButtonSpec{
-			{Label: "Keep it"},
-			{Label: "Discard it", Action: func() {
+		{Text: "(Do something with the Ducky?)", Buttons: []*awakengine.ButtonSpec{
+			{Label: "Do nothing"},
+			{Label: randWord(duckyVerbs), Action: func() {
+				awakengine.PushDialogue(&awakengine.DialogueLine{Avatar: avatarDucky, Text: "Quack?"})
+			}},
+			{Label: "Discard", Action: func() {
 				awakengine.PushDialogue(&awakengine.DialogueLine{
-					Text: "(Awakeman tries to remove it, but it reappears in the inventory slot straight away.)",
+					Text: "(Awakeman removes it, but it somehow reappears in the same inventory slot straight away.)",
 				})
 			}},
 		}},
@@ -99,10 +134,10 @@ type ItemBook book
 func (i *ItemBook) Icon() int { return itemBook }
 func (i *ItemBook) Handle(e *awakengine.Event) bool {
 	awakengine.PushDialogue([]*awakengine.DialogueLine{
-		{Text: fmt.Sprintf(`(It's a copy of "%s" by %s.)`, i.title, i.author)},
-		{Text: "(Discard the book?)", Buttons: []*awakengine.ButtonSpec{
-			{Label: "Keep it"},
-			{Label: "Discard it", Action: func() {
+		{Text: fmt.Sprintf(`(It's "%s".)`, i.title), Buttons: []*awakengine.ButtonSpec{
+			{Label: "Do nothing"},
+			{Label: "Re-read", Action: (*book)(i).readWithoutCommentary},
+			{Label: "Discard", Action: func() {
 				inventory.RemoveItem(i)
 			}},
 		}},
@@ -110,11 +145,54 @@ func (i *ItemBook) Handle(e *awakengine.Event) bool {
 	return true
 }
 
+type ItemKey struct {
+	handleTimes int
+}
+
+func (i *ItemKey) Icon() int { return itemKey }
+func (i *ItemKey) Handle(e *awakengine.Event) bool {
+	if i.handleTimes == 0 {
+		awakengine.PushDialogue([]*awakengine.DialogueLine{
+			{Avatar: avatarAwakeman, Text: `An old-fashioned key.`},
+			{Avatar: avatarAwakeman, Text: `Right about now, I wish that sentence stopped before the "key".`},
+		}...)
+	}
+	i.handleTimes++
+	awakengine.PushDialogueToBack(&awakengine.DialogueLine{
+		Text: "(Do something with the key?)",
+		Buttons: []*awakengine.ButtonSpec{
+			{Label: "Do nothing"},
+			{Label: "Use", Action: func() {
+				if player.Pos.I2().Div(tileSize) != vec.NewI2(51, 3) {
+					awakengine.PushDialogue(&awakengine.DialogueLine{
+						Avatar: avatarAwakeman,
+						Text:   `There are no locks within reach.`,
+					})
+					return
+				}
+				awakengine.PushDialogue([]*awakengine.DialogueLine{
+					{Text: `(Awakeman tries the key.)`},
+					{Avatar: avatarAwakeman, Text: `Doesn't fit in the lock.`},
+					{Avatar: avatarAwakeman, Text: `Doesn't fit anywhere.`},
+					{Avatar: avatarAwakeman, Text: `Ffffnnnaargh!`},
+					{Text: `(Awakeman punches the wall, brushing the key past a fob-swipe with a small red light.)`},
+					{Avatar: avatarDoor, Text: `*beep* *beep* *beep*`},
+					{Avatar: avatarDoor, Text: ``},
+					{Avatar: avatarDoor, Text: `*click*`},
+					{Avatar: avatarAwakeman, Text: `*blink*`},
+				}...)
+				doorUnlocked = true
+			}},
+		},
+	})
+	return true
+}
+
 type Inventory struct {
-	scene  *awakengine.Scene
 	bubble *awakengine.Bubble
 	grid   *awakengine.Grid
 	items  []Item
+	limit  int
 }
 
 func (in *Inventory) Layout() {
@@ -124,6 +202,7 @@ func (in *Inventory) Layout() {
 	in.grid.SetPosition(vec.I2{5, 5}) // bubblePartSize
 }
 
+// AddItems does not check that the limit is exceeded.
 func (in *Inventory) AddItems(items ...Item) {
 	in.items = append(in.items, items...)
 	in.Layout()
@@ -154,7 +233,7 @@ func (in *Inventory) Item(i int, par *awakengine.View) {
 		},
 		View: par,
 	}
-	in.scene.AddPart(iv)
+	scene.AddPart(iv)
 }
 
 func (in *Inventory) ItemHandle(i int, e *awakengine.Event) bool {

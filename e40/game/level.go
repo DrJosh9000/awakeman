@@ -16,6 +16,8 @@ package game
 
 import "github.com/DrJosh9000/awakengine"
 
+const tileSize = 16
+
 func (*Game) Level() (*awakengine.Level, error) {
 	bm, sz, err := awakengine.ImageAsMap("level2blockmap")
 	if err != nil {
@@ -58,7 +60,7 @@ func (*Game) Level() (*awakengine.Level, error) {
 			{Name: "exit_right", Blocking: true},
 		},
 		BlocksetKey: "libraryblocks",
-		TileSize:    16,
+		TileSize:    tileSize,
 		BlockHeight: 32,
 		Obstacles:   precomputedObstacles,
 		Paths:       precomputedPaths,
