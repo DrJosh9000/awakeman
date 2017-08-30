@@ -19,173 +19,126 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-var baseDoodads = map[string]*awakengine.BaseDoodad{
-	// --------------------- TREES ---------------------
-	"tree1": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{30, 59},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  0,
-		UL: vec.I2{25, 56},
-		DR: vec.I2{34, 63},
-	},
-	"tree2": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{33, 61},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  1,
-		UL: vec.I2{29, 55},
-		DR: vec.I2{38, 63},
-	},
-	"tree3": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{9, 58},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  2,
-		UL: vec.I2{3, 53},
-		DR: vec.I2{60, 62},
-	},
-	"tree4": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{31, 60},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  3,
-		UL: vec.I2{4, 53},
-		DR: vec.I2{59, 61},
-	},
-	"tree5": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{31, 59},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  4,
-		UL: vec.I2{19, 52},
-		DR: vec.I2{44, 63},
-	},
-	"tree6": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{31, 56},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  5,
-		UL: vec.I2{22, 51},
-		DR: vec.I2{34, 57},
-	},
-	"tree7": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{32, 58},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  6,
-		UL: vec.I2{19, 52},
-		DR: vec.I2{44, 63},
-	},
-	"tree8": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{31, 59},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  7,
-		UL: vec.I2{18, 56},
-		DR: vec.I2{41, 63},
-	},
-	"tree9": {
-		A: &awakengine.Anim{
-			Key:       "trees",
-			Offset:    vec.I2{7, 59},
-			Frames:    9,
-			FrameSize: vec.I2{64, 64},
-		},
-		F:  8,
-		UL: vec.I2{3, 53},
-		DR: vec.I2{63, 61},
-	},
+var (
+	treesSheet = &awakengine.Sheet{
+		Key:       "trees",
+		Frames:    9,
+		FrameSize: vec.I2{64, 64},
+	}
+	otherDoodadsSheet = &awakengine.Sheet{
+		Key:       "doodads",
+		Frames:    6,
+		FrameSize: vec.I2{32, 32},
+	}
 
-	// --------------------- SMALL DOODADS ---------------------
-	"bench_h": {
-		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{16, 24},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+	baseDoodads = map[string]*awakengine.BaseDoodad{
+		// --------------------- TREES ---------------------
+		"tree1": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{30, 59},
+			Frame:  0,
+			UL:     vec.I2{25, 56},
+			DR:     vec.I2{34, 63},
 		},
-		F:  0,
-		UL: vec.I2{1, 15},
-		DR: vec.I2{30, 24},
-	},
-	"W": {
-		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{16, 27},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+		"tree2": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{33, 61},
+			Frame:  1,
+			UL:     vec.I2{29, 55},
+			DR:     vec.I2{38, 63},
 		},
-		F:  1,
-		UL: vec.I2{3, 23},
-		DR: vec.I2{26, 29},
-	},
-	"puffyplant": {
-		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{16, 24},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+		"tree3": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{9, 58},
+			Frame:  2,
+			UL:     vec.I2{3, 53},
+			DR:     vec.I2{60, 62},
 		},
-		F:  2,
-		UL: vec.I2{6, 24},
-		DR: vec.I2{24, 27},
-	},
-	"evilplant": {
-		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{16, 24},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+		"tree4": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{31, 60},
+			Frame:  3,
+			UL:     vec.I2{4, 53},
+			DR:     vec.I2{59, 61},
 		},
-		F:  3,
-		UL: vec.I2{2, 22},
-		DR: vec.I2{30, 27},
-	},
-	"bench_v": {
-		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{8, 22},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+		"tree5": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{31, 59},
+			Frame:  4,
+			UL:     vec.I2{19, 52},
+			DR:     vec.I2{44, 63},
 		},
-		F:  4,
-		UL: vec.I2{4, 13},
-		DR: vec.I2{15, 30},
-	},
-	"alamore": {
-		A: &awakengine.Anim{
-			Key:       "doodads",
-			Offset:    vec.I2{16, 25},
-			Frames:    6,
-			FrameSize: vec.I2{32, 32},
+		"tree6": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{31, 56},
+			Frame:  5,
+			UL:     vec.I2{22, 51},
+			DR:     vec.I2{34, 57},
 		},
-		F:  5,
-		UL: vec.I2{8, 20},
-		DR: vec.I2{23, 28},
-	},
-}
+		"tree7": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{32, 58},
+			Frame:  6,
+			UL:     vec.I2{19, 52},
+			DR:     vec.I2{44, 63},
+		},
+		"tree8": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{31, 59},
+			Frame:  7,
+			UL:     vec.I2{18, 56},
+			DR:     vec.I2{41, 63},
+		},
+		"tree9": {
+			Sheet:  treesSheet,
+			Offset: vec.I2{7, 59},
+			Frame:  8,
+			UL:     vec.I2{3, 53},
+			DR:     vec.I2{63, 61},
+		},
+
+		// --------------------- SMALL DOODADS ---------------------
+		"bench_h": {
+			Sheet:  otherDoodadsSheet,
+			Offset: vec.I2{16, 24},
+			Frame:  0,
+			UL:     vec.I2{1, 15},
+			DR:     vec.I2{30, 24},
+		},
+		/*	"W": {
+			Sheet: otherDoodadsSheet,
+				Offset:    vec.I2{16, 27},
+			Frame:  1,
+			UL: vec.I2{3, 23},
+			DR: vec.I2{26, 29},
+		},*/
+		"puffyplant": {
+			Sheet:  otherDoodadsSheet,
+			Offset: vec.I2{16, 24},
+			Frame:  2,
+			UL:     vec.I2{6, 24},
+			DR:     vec.I2{24, 27},
+		},
+		"evilplant": {
+			Sheet:  otherDoodadsSheet,
+			Offset: vec.I2{16, 24},
+			Frame:  3,
+			UL:     vec.I2{2, 22},
+			DR:     vec.I2{30, 27},
+		},
+		"bench_v": {
+			Sheet:  otherDoodadsSheet,
+			Offset: vec.I2{8, 22},
+			Frame:  4,
+			UL:     vec.I2{4, 13},
+			DR:     vec.I2{15, 30},
+		},
+		"alamore": {
+			Sheet:  otherDoodadsSheet,
+			Offset: vec.I2{16, 25},
+			Frame:  5,
+			UL:     vec.I2{8, 20},
+			DR:     vec.I2{23, 28},
+		},
+	}
+)

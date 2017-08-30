@@ -23,15 +23,23 @@ import (
 )
 
 var (
-	debug           = flag.Bool("debug", false, "Enables debug visualisations.")
-	levelPreview    = flag.Bool("levelpreview", false, "Draw a huge level, but have no triggers.")
-	recordingFile   = flag.String("r", "", "If set, records a GIF of the screen to this file.")
-	recordingFrames = flag.Int("frames", 120, "The number of frames to record into the GIF.")
+	cfg = &awakengine.Config{
+		FramesPerUpdate: 3,
+	}
+	levelPreview = flag.Bool("levelpreview", false, "Draw a huge level, but have no triggers")
 )
+
+func init() {
+	flag.BoolVar(&cfg.Debug, "debug", false, "Enables debug visualisations")
+	flag.StringVar(&cfg.LevelGeomDump, "levelgeom", "", "If set, dumps computed obstacles & paths graphs to this file")
+	flag.StringVar(&cfg.RecordingFile, "r", "", "If set, records a GIF of the screen to this file")
+	flag.IntVar(&cfg.RecordingFrames, "frames", 120, "The number of frames to record into the GIF")
+}
 
 func main() {
 	flag.Parse()
-	if err := awakengine.Run(game.New(*levelPreview), *debug, *recordingFile, *recordingFrames); err != nil {
+	g := game.New(*levelPreview)
+	if err := awakengine.Run(g, cfg); err != nil {
 		log.Fatalf("Cannot run game: %v", err)
 	}
 }

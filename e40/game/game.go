@@ -20,38 +20,61 @@ import (
 	"github.com/DrJosh9000/vec"
 )
 
-const (
-	// One frame of animation for every (animationPeriod) frames rendered.
-	// So animation FPS = 60 / animationPeriod.
-	animPeriod = 3
+const windowTitle = "Awakeman! #40: Escape from the Dark Library"
 
-	windowTitle = "Find some missing keys"
-)
+var gameOver = false
 
 // Game implements awakengine.Game
 type Game struct {
 	pixelSize    int
-	camSize      vec.I2
 	levelPreview bool
+	noTriggers   bool
+	scene        *awakengine.Scene
 }
+
+var scene *awakengine.Scene
 
 // New creates a new Game.
-func New(levelPreview bool) *Game {
+func New(levelPreview, noTriggers bool) *Game {
 	ps := 3
 	cs := vec.I2{267, 150}
+	ts := vec.I2{1024, 512}
 	if levelPreview {
-		ps = 1
-		//cs = vec.I2{1024, 512}
-		cs = vec.I2{512, 256}
+		ps = 2
+		cs = ts
 	}
+	scene = awakengine.NewScene(cs, ts)
+	/*for _, d := range l.Doodads {
+		scene.AddObject(d)
+	}*/
+	player.View = scene.World
+	playerDelegate.AckMarker.View.SetParent(scene.World)
+	scene.CameraFocus(player.Pos.I2())
+	scene.AddPart(player, playerDelegate.AckMarker)
+
+	inventory.bubble = &awakengine.Bubble{
+		Key:  "inv_bubble",
+		View: &awakengine.View{},
+	}
+	inventory.bubble.SetParent(scene.HUD)
+	inventory.bubble.AddToScene(scene)
+	inventory.grid = &awakengine.Grid{
+		GridDelegate: inventory,
+		View:         &awakengine.View{},
+	}
+	inventory.grid.SetParent(inventory.bubble.View)
+
+	inventory.AddItems(&ItemPhone{}, ItemDucky{})
+
 	return &Game{
 		pixelSize:    ps,
-		camSize:      cs,
 		levelPreview: levelPreview,
+		noTriggers:   noTriggers,
+		scene:        scene,
 	}
 }
 
-func (*Game) BubbleKey() string { return "inv_bubble" }
+func (*Game) BubbleKey() (string, string) { return "inv_bubble", "bubble" }
 
 // Font returns the default typeface.
 func (*Game) Font() awakengine.Font {
@@ -60,20 +83,28 @@ func (*Game) Font() awakengine.Font {
 	}
 }
 
-// Player returns the player unit.
-func (*Game) Player() awakengine.Unit {
-	return player
+func (g *Game) Handle(e *awakengine.Event) bool {
+	if gameOver {
+		return true
+	}
+	if e.Type == awakengine.EventMouseUp {
+		if inventory.grid.Handle(e) {
+			return true
+		}
+		playerDelegate.SetPath(awakengine.Navigate(player.Pos.I2(), e.WorldPos))
+	}
+	g.scene.CameraFocus(player.Pos.I2())
+	return true
 }
 
-// Objects provides all sprites in the level.
-func (*Game) Objects() []awakengine.Object {
-	return []awakengine.Object{
-		&awakengine.SpriteObject{Sprite: player, Semiobject: player},
-		&awakengine.SpriteObject{Sprite: goalAckMarker, Semiobject: goalAckMarker},
-	}
+// Player returns the player unit.
+func (*Game) Player() (awakengine.Unit, *awakengine.Sprite) {
+	return playerDelegate, player
 }
+
+func (g *Game) Scene() *awakengine.Scene { return g.scene }
 
 // Viewport is the size of the window and the pixels in the window.
-func (g *Game) Viewport() (cs vec.I2, ps, ap int, title string) {
-	return g.camSize, g.pixelSize, animPeriod, windowTitle
+func (g *Game) Viewport() (pixSize int, title string) {
+	return g.pixelSize, windowTitle
 }

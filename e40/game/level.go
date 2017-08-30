@@ -14,41 +14,55 @@
 
 package game
 
-import (
-	"fmt"
+import "github.com/DrJosh9000/awakengine"
 
-	"github.com/DrJosh9000/awakengine"
-	//	"github.com/DrJosh9000/vec"
-)
+const tileSize = 16
 
 func (*Game) Level() (*awakengine.Level, error) {
-	tm, sz, err := awakengine.ImageAsMap("level2tilemap")
+	bm, sz, err := awakengine.ImageAsMap("level2blockmap")
 	if err != nil {
 		return nil, err
 	}
-	bm, sz2, err := awakengine.ImageAsMap("level2blockmap")
-	if err != nil {
-		return nil, err
-	}
-	if sz != sz2 {
-		return nil, fmt.Errorf("map sizes not equal [%v != %v]", sz, sz2)
-	}
-
 	return &awakengine.Level{
 		Doodads:  nil,
 		MapSize:  sz,
-		TileMap:  tm,
 		BlockMap: bm,
-		TileInfos: []awakengine.TileInfo{
-			{Name: "black"},
-		},
 		BlockInfos: []awakengine.TileInfo{
-			{Name: "black"},
+			{Name: "black"}, // 0
 			{Name: "prism", Blocking: true},
+			{Name: "shelf_d_1", Blocking: true},
+			{Name: "shelf_d_2", Blocking: true},
+			{Name: "shelf_d_3", Blocking: true},
+			{Name: "shelf_d_4", Blocking: true}, // 5
+			{Name: "shelf_r_1", Blocking: true},
+			{Name: "shelf_r_2", Blocking: true},
+			{Name: "shelf_r_3", Blocking: true},
+			{Name: "column", Blocking: true},
+			{Name: "stack", Blocking: true}, // 10
+			{Name: "desk", Blocking: true},
+			{Name: "wall_h", Blocking: true},
+			{Name: "wall_v", Blocking: true},
+			{Name: "wall_ul", Blocking: true},
+			{Name: "wall_ur", Blocking: true}, // 15
+			{Name: "wall_dr", Blocking: true},
+			{Name: "wall_dl", Blocking: true},
+			{Name: "wall_+", Blocking: true},
+			{Name: "wall_-|", Blocking: true},
+			{Name: "wall_|-", Blocking: true}, // 20
+			{Name: "wall_T'", Blocking: true},
+			{Name: "wall_T", Blocking: true},
+			{Name: "wall_hr", Blocking: true},
+			{Name: "wall_hl", Blocking: true},
+			{Name: "wall_vu", Blocking: true}, // 25
+			{Name: "wall_vd", Blocking: true},
+			{Name: "exit_door", Blocking: true},
+			{Name: "exit_left", Blocking: true},
+			{Name: "exit_right", Blocking: true},
 		},
-		TilesetKey:  "black16",
-		BlocksetKey: "prism",
-		TileSize:    16,
+		BlocksetKey: "libraryblocks",
+		TileSize:    tileSize,
 		BlockHeight: 32,
+		Obstacles:   precomputedObstacles,
+		Paths:       precomputedPaths,
 	}, nil
 }

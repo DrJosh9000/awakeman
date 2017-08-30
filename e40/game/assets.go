@@ -15,16 +15,30 @@
 package game
 
 import (
-	"github.com/DrJosh9000/awakeman/common"
+	common "github.com/DrJosh9000/awakeman/common/assets"
 	"github.com/DrJosh9000/awakeman/e40/assets"
 	"github.com/DrJosh9000/awakengine"
 )
 
 func init() {
-	common.RegisterWoBAssets()
-	awakengine.RegisterImage("black16", assets.Black16PNG)
-	awakengine.RegisterImage("level2tilemap", assets.Level2TileMapPNG)
+	// White-on-black assets.
+	awakengine.RegisterImage("inv_avatars", common.InvAvatarsPNG)
+	awakengine.RegisterImage("inv_bubble", common.InvBubblePNG)
+	awakengine.RegisterImage("inv_idle_l", common.InvPlayerIdleLPNG)
+	awakengine.RegisterImage("inv_idle_r", common.InvPlayerIdleRPNG)
+	awakengine.RegisterImage("inv_mark", common.InvMarkPNG)
+	awakengine.RegisterImage("inv_munro", common.InvMunroPNG)
+	awakengine.RegisterImage("inv_walk_d", common.InvPlayerWalkDPNG)
+	awakengine.RegisterImage("inv_walk_l", common.InvPlayerWalkLPNG)
+	awakengine.RegisterImage("inv_walk_r", common.InvPlayerWalkRPNG)
+	awakengine.RegisterImage("inv_walk_u", common.InvPlayerWalkUPNG)
+
+	// Black-on-white assets.
+	awakengine.RegisterImage("bubble", common.BubblePNG)
+	awakengine.RegisterImage("munro", common.MunroPNG)
+
+	// e40 assets.
 	awakengine.RegisterImage("level2blockmap", assets.Level2BlockMapPNG)
-	awakengine.RegisterImage("librarytiles", assets.LibraryTilesPNG)
-	awakengine.RegisterImage("prism", assets.PrismPNG)
+	awakengine.RegisterImage("libraryblocks", assets.LibraryBlocksPNG)
+	awakengine.RegisterImage("items", assets.ItemsPNG)
 }
