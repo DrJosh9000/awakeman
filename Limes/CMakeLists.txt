@@ -1,6 +1,6 @@
-# cd build
-# You may need to adjust this next file:
-# cmake .. -DCMAKE_TOOLCHAIN_FILE=/Users/josh/Code/Retro68-build/build-target/cmake/retro68.toolchain.cmake
+# mkdir -p build ; cd build
+### Replace the path to Retr68-build in this line:
+# cmake .. -DCMAKE_TOOLCHAIN_FILE=/home/josh/Retro68-build/build-target/cmake/retro68.toolchain.cmake
 # make
 # Then re-run make when you want a fresh build.
 
